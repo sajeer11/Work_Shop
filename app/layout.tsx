@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import local from "next/font/local";
 import "aos/dist/aos.css";
 
-import AOSProvider from "./component/AOSProvider";
+import AOSProvider from "./dark-version/component/AOSProvider";
 import "./globals.css";
 
 const geistSans = local({

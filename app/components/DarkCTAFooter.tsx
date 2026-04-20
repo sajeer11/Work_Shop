@@ -69,7 +69,7 @@ export default function DarkCTAFooter({
         </p>
 
         {/* INPUT */}
-        <div className="mx-auto mt-8 flex w-full max-w-xl flex-col rounded-full bg-white/8 p-1.5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] sm:flex-row">
+        <div className="mx-auto mt-8 flex w-full max-w-xl flex-col lg:rounded-full rounded-2xl bg-white/8 p-1.5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] sm:flex-row">
           <input
             type="email"
             placeholder={emailPlaceholder}

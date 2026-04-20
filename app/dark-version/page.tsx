@@ -1,10 +1,10 @@
-import DarkAIToolStack from "./components/DarkAIToolStack";
-import DarkCreativeIntelligence from "./components/DarkCreativeIntelligence";
-import DarkCTAFooter from "./components/DarkCTAFooter";
-import DarkHeroSection from "./components/DarkHeroSection";
-import DarkSpeakerCard from "./components/DarkSpeakerCard";
-import DarkWalkAwayWith from "./components/DarkWalkAwayWith";
-import DarkWorkshopAgenda from "./components/DarkWorkshopAgenda";
+import DarkAIToolStack from "../components/DarkAIToolStack";
+import DarkCreativeIntelligence from "../components/DarkCreativeIntelligence";
+import DarkCTAFooter from "../components/DarkCTAFooter";
+import DarkHeroSection from "../components/DarkHeroSection";
+import DarkSpeakerCard from "../components/DarkSpeakerCard";
+import DarkWalkAwayWith from "../components/DarkWalkAwayWith";
+import DarkWorkshopAgenda from "../components/DarkWorkshopAgenda";
 
 export default function DarkVersionPage() {
   const creativeCards = [
@@ -71,7 +71,7 @@ export default function DarkVersionPage() {
           ctaPrimary={{ label: "Register Now", href: "#register" }}
           ctaSecondary={{ label: "View Full Agenda", href: "#agenda" }}
           topRightButton={{ label: "Reserve Your Seat", href: "#reserve" }}
-          infoBadges={["• Full-Day Workshop", "• Beginner To Intermediate", "• Live AI Demos"]}
+          infoBadges={["â€¢ Full-Day Workshop", "â€¢ Beginner To Intermediate", "â€¢ Live AI Demos"]}
         />
 
         <DarkSpeakerCard
