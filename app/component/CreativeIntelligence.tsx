@@ -62,11 +62,17 @@ const CreativeIntelligence: React.FC<CreativeIntelligenceProps> = ({
         </span>
       </div>
 
-      <h2 className="text-4xl sm:text-5xl font-prompt text-center text-gray-900 leading-tight tracking-tight mb-4 whitespace-pre-line">
+      <h2
+        data-aos="fade-up"
+        className="text-4xl sm:text-5xl font-prompt text-center text-gray-900 leading-tight tracking-tight mb-4 whitespace-pre-line"
+      >
         {title}
       </h2>
 
-      <p className="text-xs text-center text-gray-400 max-w-lg mx-auto mb-14">
+      <p
+        data-aos="zoom-in-up"
+        className="text-xs text-center text-gray-400 max-w-lg mx-auto mb-14"
+      >
         {description}
       </p>
       {/* Cards — no visible scrollbar, drag to scroll */}

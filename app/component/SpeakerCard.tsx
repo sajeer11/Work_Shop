@@ -19,7 +19,7 @@ const SpeakerCard: React.FC<SpeakerCardProps> = ({
   speakerType,
 }) => {
   return (
-    <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-12 xl:gap-16">
+    <div className="max-w-7xl mx-auto w-full bg-white px-4 sm:px-6 lg:px-8 py-12 flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-12 xl:gap-16">
       {/* Left: Image Card with purple gradient bg */}
       <div
         className="w-full max-w-[350px] sm:max-w-[430px] lg:w-[46%] lg:max-w-[520px] aspect-[1/1.02] rounded-3xl p-2 flex-shrink-0"
@@ -49,12 +49,18 @@ const SpeakerCard: React.FC<SpeakerCardProps> = ({
       {/* Right: Speaker Info */}
       <div className="flex min-w-0 flex-1 flex-col gap-3 w-full max-w-xl lg:max-w-none text-center lg:text-left mt-6 lg:mt-14">
         {/* Speaker Type Badge */}
-        <span className="self-center lg:self-start w-auto border border-[#7F77DD] text-sm font-prompt tracking-[0.18em] uppercase text-[#0A0A0A] rounded-full px-4 py-1.5 bg-white/60">
+        <span
+          data-aos="fade-right"
+          className="self-center lg:self-start w-auto border border-[#7F77DD] text-sm font-prompt tracking-[0.18em] uppercase text-[#0A0A0A] rounded-full px-4 py-1.5 bg-white/60"
+        >
           {badge ?? speakerType}
         </span>
 
         {/* Name */}
-        <h2 className="text-3xl sm:text-4xl md:text-[2.8rem] xl:text-5xl font-prompt text-gray-900 mt-1 leading-tight break-words">
+        <h2
+          data-aos="zoom-in-right"
+          className="text-3xl sm:text-4xl md:text-[2.8rem] xl:text-5xl font-prompt text-gray-900 mt-1 leading-tight break-words"
+        >
           {name.split(" ")[0]} <br /> {name.split(" ").slice(1).join(" ")}
         </h2>
 
@@ -62,7 +68,10 @@ const SpeakerCard: React.FC<SpeakerCardProps> = ({
         <p className="text-sm font-prompt text-[#7c6fcf]">{role}</p>
 
         {/* Description */}
-        <p className="text-[#6C6C6C] font-prompt mt-6 sm:mt-8 lg:mt-10 leading-relaxed italic text-[0.95rem] lg:max-w-xl">
+        <p
+          data-aos="fade-up-left"
+          className="text-[#6C6C6C] font-prompt mt-6 sm:mt-8 lg:mt-10 leading-relaxed italic text-[0.95rem] lg:max-w-xl"
+        >
           {description}
         </p>
       </div>

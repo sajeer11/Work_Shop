@@ -32,13 +32,17 @@ const AIToolStack: React.FC<AIToolStackProps> = ({
 
         {/* Title */}
         <h2
+          data-aos="flip-left"
           className="text-3xl sm:text-5xl lg:text-6xl font-prompt text-gray-900 leading-none tracking-tight mb-4 whitespace-pre-line"
         >
           {title}
         </h2>
 
         {/* Subtitle */}
-        <p className="text-sm text-gray-500 mb-10 sm:mb-16 max-w-md">
+        <p
+          data-aos="zoom-in-left"
+          className="text-sm text-gray-500 mb-10 sm:mb-16 max-w-md"
+        >
           {subtitle}
         </p>
 

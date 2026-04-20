@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import local from "next/font/local";
+import "aos/dist/aos.css";
 
+import AOSProvider from "./component/AOSProvider";
 import "./globals.css";
 
 const geistSans = local({
@@ -50,7 +52,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${promt.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <AOSProvider />
+        {children}
+      </body>
     </html>
   );
 }

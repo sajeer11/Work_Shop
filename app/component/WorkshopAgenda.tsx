@@ -35,13 +35,17 @@ const WorkshopAgenda: React.FC<WorkshopAgendaProps> = ({
 
             {/* Title */}
             <h2
+              data-aos="fade-left"
               className="text-4xl sm:text-6xl font-prompt text-gray-900 leading-none tracking-tight mb-6 whitespace-pre-line"
             >
               {title}
             </h2>
 
             {/* Subtitle */}
-            <p className="text-xs text-gray-400 leading-relaxed max-w-xs">
+            <p
+              data-aos="fade-up-left"
+              className="text-xs text-gray-400 leading-relaxed max-w-xs"
+            >
               {subtitle}
             </p>
           </div>
