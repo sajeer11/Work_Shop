@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React from "react";
 
 interface ResultItem {
@@ -75,10 +76,12 @@ const WalkAwayWith: React.FC<WalkAwayWithProps> = ({
 
         {/* Right Panel — image */}
         <div className="w-full md:w-1/2 relative min-h-[320px]">
-          <img
+          <Image
             src={imageUrl}
             alt={imageAlt}
-            className="absolute inset-0 w-full h-full object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover"
           />
         </div>
       </div>

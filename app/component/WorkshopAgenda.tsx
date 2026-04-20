@@ -35,7 +35,7 @@ const WorkshopAgenda: React.FC<WorkshopAgendaProps> = ({
 
             {/* Title */}
             <h2
-              className="text-5xl sm:text-6xl font-prompt text-gray-900 leading-none tracking-tight mb-6 whitespace-pre-line"
+              className="text-4xl sm:text-6xl font-prompt text-gray-900 leading-none tracking-tight mb-6 whitespace-pre-line"
             >
               {title}
             </h2>

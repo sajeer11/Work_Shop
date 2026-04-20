@@ -46,6 +46,7 @@ export default function Home() {
         headline="HOW MODERN CREATORS COMBINE DESIGN, VIDEO & AI"
         subtitle="Workshop • Live & AI Powered"
         description="How modern creators build smarter content: a fully AI-driven hands-on workshop by Brand Republic."
+        videoUrl="/video/shadergradient.mp4"
         ctaPrimary={{ label: "Register Now", href: "#register" }}
         ctaSecondary={{ label: "View Full Agenda", href: "#agenda" }}
         badge="Workshop - Live & AI Powered"
@@ -75,13 +76,13 @@ export default function Home() {
 
       {/* Creative Intelligence Section */}
       <CreativeIntelligence
-        title="06 STEP CREATIVE INTELLIGENCE PROCESS"
+        title={"06 STEP CREATIVE\nINTELLIGENCE PROCESS"}
         description="A practical system you'll apply in every module from first idea to final optimized asset."
         cards={creativeCards}
       />
       <WorkshopAgenda
   badge="WHAT YOU'LL COVER"
-  title={"WORKSHOP\nAGENDA"}
+  title={"WORKSHOP\n AGENDA"}
   subtitle="09 modules, fully AI-driven each builds directly on the last."
   items={[
     { number: "01", title: "SETTING THE STAGE",             description: "AI-narrated welcome • live warm-up exercise with a generated creative brief" },
@@ -101,32 +102,38 @@ export default function Home() {
   subtitle="No prior experience needed everything is taught from scratch."
   tools={[
     {
-      icon: <img src="cloud.svg" alt="Claude" className="w-10 h-10 object-contain" />,
+      iconSrc: "cloud.svg",
+      iconAlt: "Claude",
       name: "CLAUDE / CHATGPT",
       description: "Ideation, briefs & planning",
     },
     {
-      icon: <img src="higgsfield.svg" alt="Higgsfield" className="w-10 h-10 object-contain" />,
+      iconSrc: "higgsfield.svg",
+      iconAlt: "Higgsfield",
       name: "HIGGSFIELD",
       description: "Text-to-video generation",
     },
     {
-      icon: <img src="naino-banana.svg" alt="Nano Banana Pro" className="w-10 h-10 object-contain" />,
+      iconSrc: "naino-banana.svg",
+      iconAlt: "Nano Banana Pro",
       name: "NANO BANANA PRO",
       description: "Multi-format social assets",
     },
     {
-      icon: <img src="midjourney.svg" alt="Midjourney" className="w-10 h-10 object-contain" />,
+      iconSrc: "midjourney.svg",
+      iconAlt: "Midjourney",
       name: "MIDJOURNEY",
       description: "Visual & mood board creation",
     },
     {
-      icon: <img src="canva.svg" alt="Canva AI" className="w-10 h-10 object-contain" />,
+      iconSrc: "canva.svg",
+      iconAlt: "Canva AI",
       name: "CANVA AI",
       description: "Campaign templates & scaling",
     },
     {
-      icon: <img src="runway.svg" alt="Runway ML" className="w-10 h-10 object-contain" />,
+      iconSrc: "runway.svg",
+      iconAlt: "Runway ML",
       name: "RUNWAY ML",
       description: "Video editing & motion",
     },

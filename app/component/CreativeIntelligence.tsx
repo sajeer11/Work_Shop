@@ -62,13 +62,13 @@ const CreativeIntelligence: React.FC<CreativeIntelligenceProps> = ({
         </span>
       </div>
 
-     <h2 className="text-4xl sm:text-5xl font-prompt text-center text-gray-900 leading-tight tracking-tight mb-4">
-  {"06 STEP CREATIVE"} <br /> {title.replace("06 STEP CREATIVE", "")}
-</h2>
+      <h2 className="text-4xl sm:text-5xl font-prompt text-center text-gray-900 leading-tight tracking-tight mb-4 whitespace-pre-line">
+        {title}
+      </h2>
 
-<p className="text-xs text-center text-gray-400 max-w-lg mx-auto mb-14">
-  {description}
-</p>
+      <p className="text-xs text-center text-gray-400 max-w-lg mx-auto mb-14">
+        {description}
+      </p>
       {/* Cards — no visible scrollbar, drag to scroll */}
       <div className="overflow-hidden">
         <div

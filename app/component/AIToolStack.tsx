@@ -1,8 +1,10 @@
 "use client";
+import Image from "next/image";
 import React from "react";
 
 interface Tool {
-  icon: React.ReactNode;
+  iconSrc: string;
+  iconAlt: string;
   name: string;
   description: string;
 }
@@ -21,8 +23,8 @@ const AIToolStack: React.FC<AIToolStackProps> = ({
   tools,
 }) => {
   return (
-    <section className="w-full bg-[#f2f2f2] px-16 py-20">
-      <div className="max-w-7xl mx-auto">
+    <section className="w-full bg-[#f2f2f2] px-4 sm:px-6 md:px-10 lg:px-16 py-16 sm:py-20">
+      <div className="w-full max-w-7xl mx-auto">
         {/* Badge */}
         <span className="inline-block text-xs font-prompt tracking-[0.18em] uppercase text-[#0A0A0A] border border-[#7F77DD] rounded-full px-5 py-1.5 mb-8">
           {badge}
@@ -30,13 +32,13 @@ const AIToolStack: React.FC<AIToolStackProps> = ({
 
         {/* Title */}
         <h2
-          className="text-5xl sm:text-6xl font-prompt text-gray-900 leading-none tracking-tight mb-4 whitespace-pre-line"
+          className="text-3xl sm:text-5xl lg:text-6xl font-prompt text-gray-900 leading-none tracking-tight mb-4 whitespace-pre-line"
         >
           {title}
         </h2>
 
         {/* Subtitle */}
-        <p className="text-sm text-gray-500 mb-16 max-w-md">
+        <p className="text-sm text-gray-500 mb-10 sm:mb-16 max-w-md">
           {subtitle}
         </p>
 
@@ -45,11 +47,17 @@ const AIToolStack: React.FC<AIToolStackProps> = ({
           {tools.map((tool, index) => (
             <div
               key={index}
-              className="bg-[#F6F6F6] px-10 py-12 flex flex-col gap-10 h-50 hover:bg-white transition-colors duration-200 rounded-2xl"
+              className="w-full bg-[#F6F6F6] px-6 sm:px-8 lg:px-10 py-10 sm:py-12 flex flex-col hover:bg-white transition-colors duration-200 rounded-2xl"
             >
               {/* Icon */}
-              <div className="w-12 h-12 flex items-center justify-center">
-                {tool.icon}
+              <div className="relative w-12 h-12">
+                <Image
+                  src={tool.iconSrc}
+                  alt={tool.iconAlt}
+                  fill
+                  sizes="48px"
+                  className="object-contain"
+                />
               </div>
 
               {/* Name + description */}

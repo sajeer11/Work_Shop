@@ -4,6 +4,7 @@ interface HeroSectionProps {
   headline: string;
   subtitle: string;
   description: string;
+  videoUrl: string;
   ctaPrimary: { label: string; href: string };
   ctaSecondary: { label: string; href: string };
   badge: string;
@@ -16,6 +17,7 @@ const Herosection: React.FC<HeroSectionProps> = ({
   headline,
   subtitle,
   description,
+  videoUrl,
   ctaPrimary,
   ctaSecondary,
   badge,
@@ -32,35 +34,36 @@ const Herosection: React.FC<HeroSectionProps> = ({
       }}
     >
    
-        <video
+      <video
         autoPlay
         loop
         muted
         playsInline
         className="absolute inset-0 w-full h-full object-cover z-0"
       >
-        <source src="/video/shadergradient.mp4" type="video/mp4" />
+        <source src={videoUrl} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
       {/* Overlay to darken video for better text visibility */}
       <div className="absolute inset-0 bg-white/20 z-10"></div>
 
-      {/* Navbar */}
-      <nav className="relative z-10 flex items-center justify-between px-10 pt-8 pb-2">
-        {/* Logo */}
-        <div className="text-white text-xs font-prompt leading-tight tracking-widest uppercase whitespace-pre-line opacity-90">
-          {logo}
-        </div>
+      <nav className="relative z-10 flex items-center w-full px-4 sm:px-6 md:px-10 pt-8 pb-2 gap-4">
+  
+  {/* Logo */}
+  <div className="text-white text-xs lg:text-sm md:text-sm font-prompt leading-tight tracking-widest uppercase whitespace-pre-line opacity-90 shrink-0">
+    {logo}
+  </div>
 
-        {/* Top-right CTA */}
-       <a
-  href={topRightButton.href}
-  className="text-sm font-prompt px-6 py-2 rounded-full text-white border border-white/20 bg-[#7F77DD] backdrop-blur-md hover:bg-white/20 transition-all duration-200 shadow font-prompt"
->
-  {topRightButton.label}
-</a>
-      </nav>
+  {/* Button */}
+  <a
+    href={topRightButton.href}
+    className="ml-auto text-sm font-prompt px-6 py-2 rounded-full text-white border border-white/20 bg-[#7F77DD] backdrop-blur-md hover:bg-white/20 transition-all duration-200 shadow whitespace-nowrap shrink-0"
+  >
+    {topRightButton.label}
+  </a>
+
+</nav>
 
       {/* Main content — centered vertically in remaining space */}
       <div className="relative z-10 flex flex-col items-center justify-center flex-1 px-4 pb-16 pt-8 text-center">
