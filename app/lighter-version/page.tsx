@@ -1,10 +1,10 @@
-import Herosection from "../component/HeroSrection";
-import AIToolStack from "../component/AIToolStack";
-import SpeakerCard from "../component/SpeakerCard";
-import CreativeIntelligence from "../component/CreativeIntelligence";
-import WorkshopAgenda from "../component/WorkshopAgenda";
-import WalkAwayWith from "../component/WalkAwayWith";
-import CTAFooter from "../component/CTAFooter";
+import Herosection from "../dark-version/component/HeroSrection";
+import AIToolStack from "../dark-version/component/AIToolStack";
+import SpeakerCard from "../dark-version/component/SpeakerCard";
+import CreativeIntelligence from "../dark-version/component/CreativeIntelligence";
+import WorkshopAgenda from "../dark-version//component/WorkshopAgenda";
+import WalkAwayWith from "../dark-version//component/WalkAwayWith";
+import CTAFooter from "../dark-version//component/CTAFooter";
 
 export default function LighterVersionPage() {
   const creativeCards = [
@@ -20,14 +20,14 @@ export default function LighterVersionPage() {
     <main className="flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-b from-white to-indigo-50">
       <Herosection
         headline="HOW MODERN CREATORS COMBINE DESIGN, VIDEO & AI"
-        subtitle="Workshop â€¢ Live & AI Powered"
+        subtitle="Workshop  Live & AI Powered"
         description="How modern creators build smarter content: a fully AI-driven hands-on workshop by Brand Republic."
         videoUrl="/video/shadergradient.mp4"
         ctaPrimary={{ label: "Register Now", href: "#register" }}
         ctaSecondary={{ label: "View Full Agenda", href: "#agenda" }}
         badge="Workshop - Live & AI Powered"
         topRightButton={{ label: "Reserve Your Seat", href: "#reserve" }}
-        infoBadges={["â€¢ Full-Day Workshop", "â€¢ Beginner To Intermediate", "â€¢ Live AI Demos"]}
+        infoBadges={[" Full-Day Workshop", " Beginner To Intermediate", " Live AI Demos"]}
       />
 
       <div className="mt-16 sm:mt-24 lg:mt-32"></div>
