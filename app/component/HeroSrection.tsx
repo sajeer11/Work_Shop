@@ -79,6 +79,7 @@ const Herosection: React.FC<HeroSectionProps> = ({
 
         {/* Headline */}
         <h1
+          data-aos="fade-down"
           className="font-prompt text-white text-center mb-6 leading-none tracking-tight max-w-7xl"
           style={{
             fontSize: "clamp(2.2rem, 6vw, 4.5rem)",
@@ -91,6 +92,7 @@ const Herosection: React.FC<HeroSectionProps> = ({
 
         {/* Description */}
         <p
+          data-aos="fade-up"
           className="text-[#EEEEEE] text-sm leading-relaxed mb-10 "
           style={{ maxWidth: "420px" }}
         >

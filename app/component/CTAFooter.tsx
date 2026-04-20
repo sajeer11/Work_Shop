@@ -48,14 +48,18 @@ const CTAFooter: React.FC<CTAFooterProps> = ({
         <div className="flex-1 flex flex-col justify-center max-w-2xl pt-10 sm:pt-0">
           {/* Title */}
           <h2
-            className="font-prompt text-[#0A0A0A] leading-none tracking-tight mb-5 sm:mb-6 whitespace-pre-line"
+            data-aos="zoom-in-up"
+            className="font-prompt text-white leading-none tracking-tight mb-5 sm:mb-6 whitespace-pre-line"
             style={{ fontSize: "clamp(2.8rem, 6vw, 5rem)" }}
           >
             {title}
           </h2>
 
           {/* Description */}
-          <p className="text-sm text-[#FFFFFF] leading-relaxed mb-8 sm:mb-10 max-w-md">
+          <p
+            data-aos="fade-up"
+            className="text-sm text-[#FFFFFF] leading-relaxed mb-8 sm:mb-10 max-w-md"
+          >
             {description}
           </p>
 

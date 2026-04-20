@@ -37,6 +37,7 @@ const WalkAwayWith: React.FC<WalkAwayWithProps> = ({
 
             {/* Title */}
             <h2
+              data-aos="zoom-out-right"
               className="text-4xl sm:text-5xl font-promt text-gray-900 leading-none tracking-tight mb-10 whitespace-pre-line"
             >
               {title}
