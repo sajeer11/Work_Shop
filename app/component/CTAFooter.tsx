@@ -49,7 +49,7 @@ const CTAFooter: React.FC<CTAFooterProps> = ({
           {/* Title */}
           <h2
             data-aos="zoom-in-up"
-            className="font-prompt text-white leading-none tracking-tight mb-5 sm:mb-6 whitespace-pre-line"
+            className="font-prompt text-black leading-none tracking-tight mb-5 sm:mb-6 whitespace-pre-line"
             style={{ fontSize: "clamp(2.8rem, 6vw, 5rem)" }}
           >
             {title}
