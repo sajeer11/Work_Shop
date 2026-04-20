@@ -40,7 +40,7 @@ export default function Home() {
   ];
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-b from-white to-indigo-50 dark:from-[#181825] dark:to-[#23243a]">
+    <main className="flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-b from-white to-indigo-50">
       {/* Hero Section */}
       <Herosection
         headline="HOW MODERN CREATORS COMBINE DESIGN, VIDEO & AI"
