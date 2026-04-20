@@ -57,21 +57,21 @@ const CreativeIntelligence: React.FC<CreativeIntelligenceProps> = ({
     <section className="max-w-7xl mx-auto bg-white px-6 py-20">
       {/* Badge */}
       <div className="flex justify-center mb-6">
-        <span className="text-sm font-prompt tracking-[0.18em] uppercase text-[#0A0A0A]  h-[35px] border  border-[#7F77DD] rounded-full px-5 py-1.5">
+        <span className="text-lg font-prompt tracking-[0.18em] uppercase text-[#0A0A0A]  border  border-[#7F77DD] rounded-full px-5 py-1.5">
           {badge}
         </span>
       </div>
 
       <h2
         data-aos="fade-up"
-        className="text-4xl sm:text-5xl font-prompt text-center text-gray-900 leading-tight tracking-tight mb-4 whitespace-pre-line"
+        className="text-5xl sm:text-5xl font-prompt text-center text-gray-900 leading-tight tracking-tight mb-4 whitespace-pre-line"
       >
         {title}
       </h2>
 
       <p
         data-aos="zoom-in-up"
-        className="text-xs text-center text-gray-400 max-w-lg mx-auto mb-14"
+        className="text-sm text-center text-gray-400 max-w-lg mx-auto mb-14"
       >
         {description}
       </p>

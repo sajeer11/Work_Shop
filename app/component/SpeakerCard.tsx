@@ -51,7 +51,7 @@ const SpeakerCard: React.FC<SpeakerCardProps> = ({
         {/* Speaker Type Badge */}
         <span
           data-aos="fade-right"
-          className="self-center lg:self-start w-auto border border-[#7F77DD] text-sm font-prompt tracking-[0.18em] uppercase text-[#0A0A0A] rounded-full px-4 py-1.5 bg-white/60"
+          className="self-center lg:self-start w-auto border border-[#7F77DD] text-lg font-prompt tracking-[0.18em] uppercase text-[#0A0A0A] rounded-full px-4 py-1.5 bg-white/60"
         >
           {badge ?? speakerType}
         </span>
@@ -59,18 +59,18 @@ const SpeakerCard: React.FC<SpeakerCardProps> = ({
         {/* Name */}
         <h2
           data-aos="zoom-in-right"
-          className="text-3xl sm:text-4xl md:text-[2.8rem] xl:text-5xl font-prompt text-gray-900 mt-1 leading-tight break-words"
+          className="text-3xl sm:text-4xl md:text-[2.8rem] xl:text-6xl font-prompt text-gray-900 mt-1 leading-tight break-words"
         >
           {name.split(" ")[0]} <br /> {name.split(" ").slice(1).join(" ")}
         </h2>
 
         {/* Role */}
-        <p className="text-sm font-prompt text-[#7c6fcf]">{role}</p>
+        <p className="text-lg font-prompt text-[#7c6fcf]">{role}</p>
 
         {/* Description */}
         <p
           data-aos="fade-up-left"
-          className="text-[#6C6C6C] font-prompt mt-6 sm:mt-8 lg:mt-10 leading-relaxed italic text-[0.95rem] lg:max-w-xl"
+          className="text-[#6C6C6C] text-lg font-prompt mt-6 sm:mt-8 lg:mt-10 leading-relaxed italic text-[0.95rem] lg:max-w-xl"
         >
           {description}
         </p>

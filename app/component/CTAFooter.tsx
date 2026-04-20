@@ -48,7 +48,8 @@ const CTAFooter: React.FC<CTAFooterProps> = ({
         <div className="flex-1 flex flex-col justify-center max-w-2xl pt-10 sm:pt-0">
           {/* Title */}
           <h2
-            data-aos="zoom-in-up"
+            data-aos="fade-up"
+            data-aos-anchor-placement="top-bottom"
             className="font-prompt text-black leading-none tracking-tight mb-5 sm:mb-6 whitespace-pre-line"
             style={{ fontSize: "clamp(2.8rem, 6vw, 5rem)" }}
           >
@@ -58,7 +59,8 @@ const CTAFooter: React.FC<CTAFooterProps> = ({
           {/* Description */}
           <p
             data-aos="fade-up"
-            className="text-sm text-[#FFFFFF] leading-relaxed mb-8 sm:mb-10 max-w-md"
+            data-aos-anchor-placement="top-bottom"
+            className="text-lg text-[#FFFFFF] leading-relaxed mb-8 sm:mb-10 max-w-md"
           >
             {description}
           </p>
@@ -89,13 +91,13 @@ const CTAFooter: React.FC<CTAFooterProps> = ({
       <div className="relative z-10 w-full max-w-7xl mx-auto border-t border-[#FFFFFF] px-4 sm:px-6 lg:px-10 py-6">
         {/* Logo */}
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-white/70 text-xs font-prompt leading-tight tracking-widest uppercase whitespace-pre-line text-center sm:text-left">
+          <p className="text-white/70 text-lg font-prompt leading-tight tracking-widest uppercase whitespace-pre-line text-center sm:text-left">
             {logo}
           </p>
 
           {/* CTA button */}
           <button
-            className="w-full sm:w-auto font-prompt text-sm text-white px-7 py-3 rounded-full transition-all hover:opacity-90"
+            className="w-full sm:w-auto font-prompt text-lg text-white px-7 py-3 rounded-full transition-all hover:opacity-90"
             style={{
               background: "linear-gradient(135deg, #9b8fe8 0%, #7c6fcf 100%)",
             }}

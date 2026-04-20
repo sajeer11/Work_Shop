@@ -26,13 +26,14 @@ const AIToolStack: React.FC<AIToolStackProps> = ({
     <section className="w-full bg-[#f2f2f2] px-4 sm:px-6 md:px-10 lg:px-16 py-16 sm:py-20">
       <div className="w-full max-w-7xl mx-auto">
         {/* Badge */}
-        <span className="inline-block text-xs font-prompt tracking-[0.18em] uppercase text-[#0A0A0A] border border-[#7F77DD] rounded-full px-5 py-1.5 mb-8">
+        <span className="inline-block text-lg font-prompt tracking-[0.18em] uppercase text-[#0A0A0A] border border-[#7F77DD] rounded-full px-5 py-1.5 mb-8">
           {badge}
         </span>
 
         {/* Title */}
         <h2
-          data-aos="flip-left"
+          data-aos="fade-up"
+          data-aos-anchor-placement="top-bottom"
           className="text-3xl sm:text-5xl lg:text-6xl font-prompt text-gray-900 leading-none tracking-tight mb-4 whitespace-pre-line"
         >
           {title}
@@ -40,7 +41,8 @@ const AIToolStack: React.FC<AIToolStackProps> = ({
 
         {/* Subtitle */}
         <p
-          data-aos="zoom-in-left"
+          data-aos="fade-up"
+          data-aos-anchor-placement="top-bottom"
           className="text-sm text-gray-500 mb-10 sm:mb-16 max-w-md"
         >
           {subtitle}
