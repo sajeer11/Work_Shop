@@ -23,20 +23,20 @@ const WorkshopAgenda: React.FC<WorkshopAgendaProps> = ({
   return (
     <div className="w-full bg-white">
     <section className="max-w-7xl mx-auto px-6 py-16">
-      <div className="flex flex-col md:flex-row  rounded-2xl overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-start rounded-2xl">
 
         {/* Left Panel */}
-        <div className="w-full md:w-[38%]  p-10 flex flex-col justify-between ]">
+        <div className="w-full md:w-[38%] p-10 flex flex-col justify-between md:sticky md:top-24 self-start">
           {/* Badge */}
           <div>
-            <span className="inline-block text-xs h-auto font-semibold tracking-[0.18em] uppercase text-gray-700 border border-[#7F77DD] rounded-full px-4 py-1.5 mb-8">
+            <span className="inline-block text-lg h-auto  tracking-[0.18em] uppercase text-gray-700 border border-[#7F77DD] rounded-full px-4 py-1.5 mb-8">
               {badge}
             </span>
 
             {/* Title */}
             <h2
               data-aos="fade-left"
-              className="text-4xl sm:text-6xl font-prompt text-gray-900 leading-none tracking-tight mb-6 whitespace-pre-line"
+              className="text-5xl sm:text-6xl font-prompt text-gray-900 leading-none tracking-tight mb-6 whitespace-pre-line"
             >
               {title}
             </h2>
@@ -44,7 +44,7 @@ const WorkshopAgenda: React.FC<WorkshopAgendaProps> = ({
             {/* Subtitle */}
             <p
               data-aos="fade-up-left"
-              className="text-xs text-gray-400 leading-relaxed max-w-xs"
+              className="text-sm text-gray-400 leading-relaxed max-w-xs"
             >
               {subtitle}
             </p>

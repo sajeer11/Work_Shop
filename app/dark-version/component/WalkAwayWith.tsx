@@ -27,18 +27,19 @@ const WalkAwayWith: React.FC<WalkAwayWithProps> = ({
       <div className="flex flex-col md:flex-row  rounded-2xl overflow-hidden min-h-[400px]">
 
         {/* Left Panel */}
-        <div className="  w-full md:w-1/2 bg-white px-10 py-10 flex flex-col justify-between border-b md:border-b-0 md:border-r">
+        <div className="w-full md:w-1/2 bg-white px-10 py-10 flex flex-col justify-between">
           {/* Top: badge + title */}
           <div>
             {/* Badge */}
-            <span className="inline-block text-xs font-prompt tracking-[0.18em] uppercase text-gray-700 border  border-[#7F77DD] rounded-full px-4 py-1.5 mb-8">
+            <span className="inline-block text-lg  font-prompt tracking-[0.18em] uppercase text-gray-700 border  border-[#7F77DD] rounded-full px-4 py-1.5 mb-8">
               {badge}
             </span>
 
             {/* Title */}
             <h2
-              data-aos="zoom-out-right"
-              className="text-4xl sm:text-5xl font-promt text-gray-900 leading-none tracking-tight mb-10 whitespace-pre-line"
+              data-aos="fade-up"
+              data-aos-anchor-placement="top-bottom"
+              className="text-5xl sm:text-5xl font-promt text-gray-900 leading-none tracking-tight mb-10 whitespace-pre-line"
             >
               {title}
             </h2>
@@ -67,7 +68,7 @@ const WalkAwayWith: React.FC<WalkAwayWithProps> = ({
                     />
                   </svg>
                 </span>
-                <span className="text-sm text-gray-600 leading-relaxed">
+                <span className="text-lg text-gray-600 leading-relaxed">
                   {item.text}
                 </span>
               </li>
@@ -76,13 +77,13 @@ const WalkAwayWith: React.FC<WalkAwayWithProps> = ({
         </div>
 
         {/* Right Panel — image */}
-        <div className="w-full md:w-1/2 relative min-h-[320px]">
+        <div className="w-full md:w-1/2 relative min-h-[320px] rounded-2xl">
           <Image
             src={imageUrl}
             alt={imageAlt}
             fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover"
+       
+           
           />
         </div>
       </div>
