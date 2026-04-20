@@ -19,7 +19,7 @@ const SpeakerCard: React.FC<SpeakerCardProps> = ({
   speakerType,
 }) => {
   return (
-    <div className="max-w-7xl mx-auto w-full bg-white px-4 sm:px-6 lg:px-8 py-12 flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-12 xl:gap-16">
+    <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-12 xl:gap-16">
       {/* Left: Image Card with purple gradient bg */}
       <div
         className="w-full max-w-[350px] sm:max-w-[430px] lg:w-[46%] lg:max-w-[520px] aspect-[1/1.02] rounded-3xl p-2 flex-shrink-0"
