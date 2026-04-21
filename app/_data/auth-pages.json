@@ -1,0 +1,35 @@
+{
+  "register": {
+    "badge": "JOIN THE LAB",
+    "title": "Create your account",
+    "description": "Reserve your place and keep the same Creative Intelligence Lab flow with a clean, dark signup experience.",
+    "submitLabel": "Create Account",
+    "formAction": "/dark-version",
+    "fields": [
+      {
+        "name": "firstName",
+        "label": "First Name",
+        "type": "text",
+        "placeholder": "Enter your first name"
+      },
+      {
+        "name": "lastName",
+        "label": "Last Name",
+        "type": "text",
+        "placeholder": "Enter your last name"
+      },
+      {
+        "name": "email",
+        "label": "Email Address",
+        "type": "email",
+        "placeholder": "Enter your email address"
+      },
+      {
+        "name": "contact",
+        "label": "Contact Number",
+        "type": "tel",
+        "placeholder": "Enter your contact number"
+      }
+    ]
+  }
+}

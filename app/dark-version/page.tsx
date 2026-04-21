@@ -112,6 +112,7 @@ export default function DarkVersionPage() {
         description={ctaFooter.description}
         emailPlaceholder={ctaFooter.emailPlaceholder}
         ctaLabel={ctaFooter.ctaLabel}
+        ctaHref={ctaFooter.ctaHref}
         footerLinks={ctaFooter.footerLinks}
         copyrightText={ctaFooter.copyrightText}
       />

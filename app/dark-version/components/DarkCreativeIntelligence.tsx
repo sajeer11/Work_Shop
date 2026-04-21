@@ -56,13 +56,15 @@ export default function DarkCreativeIntelligence({
           >
             <div className="flex h-16 items-start">
               {card.img ? (
-                <Image
-                  src={card.img}
-                  alt={`${card.title} icon`}
-                  width={132}
-                  height={64}
-                  className="h-16 w-auto object-contain"
-                />
+                <div className="relative h-16 w-[132px]">
+                  <Image
+                    src={card.img}
+                    alt={`${card.title} icon`}
+                    fill
+                    sizes="132px"
+                    className="object-contain"
+                  />
+                </div>
               ) : null}
             </div>
             <div>

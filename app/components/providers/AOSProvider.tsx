@@ -1,10 +1,19 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import AOS from "aos";
 
 export default function AOSProvider() {
+  const pathname = usePathname();
+
   useEffect(() => {
+    const hasAnimatedElements = Boolean(document.querySelector("[data-aos]"));
+
+    if (!hasAnimatedElements) {
+      return;
+    }
+
     AOS.init({
       duration: 800,
       easing: "ease-out-cubic",
@@ -14,22 +23,26 @@ export default function AOSProvider() {
     });
 
     const refreshAOS = () => {
-      AOS.refreshHard();
+      window.requestAnimationFrame(() => {
+        try {
+          AOS.refreshHard();
+        } catch {
+          // Avoid route-transition crashes when the DOM is still settling.
+        }
+      });
     };
 
     const timeoutId = window.setTimeout(refreshAOS, 300);
 
     window.addEventListener("load", refreshAOS);
     window.addEventListener("resize", refreshAOS);
-    window.addEventListener("orientationchange", refreshAOS);
 
     return () => {
       window.clearTimeout(timeoutId);
       window.removeEventListener("load", refreshAOS);
       window.removeEventListener("resize", refreshAOS);
-      window.removeEventListener("orientationchange", refreshAOS);
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }
