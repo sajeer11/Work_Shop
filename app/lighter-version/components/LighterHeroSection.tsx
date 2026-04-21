@@ -1,6 +1,6 @@
 import React from "react";
 
-interface HeroSectionProps {
+interface LighterHeroSectionProps {
   headline: string;
   subtitle: string;
   description: string;
@@ -8,12 +8,12 @@ interface HeroSectionProps {
   ctaPrimary: { label: string; href: string };
   ctaSecondary: { label: string; href: string };
   badge: string;
-  logo?: string;
+  logo: string;
   topRightButton: { label: string; href: string };
   infoBadges: string[];
 }
 
-const Herosection: React.FC<HeroSectionProps> = ({
+const LighterHeroSection: React.FC<LighterHeroSectionProps> = ({
   headline,
   subtitle,
   description,
@@ -21,7 +21,7 @@ const Herosection: React.FC<HeroSectionProps> = ({
   ctaPrimary,
   ctaSecondary,
   badge,
-  logo = "CREATIVE\nINTELLIGENCE\nLAB",
+  logo,
   topRightButton,
   infoBadges,
 }) => {
@@ -138,4 +138,4 @@ const Herosection: React.FC<HeroSectionProps> = ({
   );
 };
 
-export default Herosection;
+export default LighterHeroSection;

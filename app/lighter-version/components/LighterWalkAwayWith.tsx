@@ -6,20 +6,20 @@ interface ResultItem {
   text: string;
 }
 
-interface WalkAwayWithProps {
-  badge?: string;
-  title?: string;
+interface LighterWalkAwayWithProps {
+  badge: string;
+  title: string;
   results: ResultItem[];
   imageUrl: string;
-  imageAlt?: string;
+  imageAlt: string;
 }
 
-const WalkAwayWith: React.FC<WalkAwayWithProps> = ({
-  badge = "RESULTS",
-  title = "WHAT YOU'LL\nWALK AWAY WITH",
+const LighterWalkAwayWith: React.FC<LighterWalkAwayWithProps> = ({
+  badge,
+  title,
   results,
   imageUrl,
-  imageAlt = "Workshop result",
+  imageAlt,
 }) => {
   return (
     <div className="w-full bg-white">
@@ -92,4 +92,4 @@ const WalkAwayWith: React.FC<WalkAwayWithProps> = ({
   );
 };
 
-export default WalkAwayWith;
+export default LighterWalkAwayWith;

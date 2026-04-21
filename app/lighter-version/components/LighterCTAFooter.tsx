@@ -1,22 +1,22 @@
 "use client";
 import React, { useRef } from "react";
 
-interface CTAFooterProps {
-  title?: string;
-  description?: string;
-  emailPlaceholder?: string;
-  ctaLabel?: string;
-  logo?: string;
-  videoUrl: string; 
+interface LighterCTAFooterProps {
+  title: string;
+  description: string;
+  emailPlaceholder: string;
+  ctaLabel: string;
+  logo: string;
+  videoUrl: string;
 }
 
-const CTAFooter: React.FC<CTAFooterProps> = ({
-  title = "READY TO BUILD\nSMARTER?",
-  description = "Join creators, designers, and strategists leveling up their workflow with AI Limited seats available.",
-  emailPlaceholder = "Enter Your Email Address",
-  ctaLabel = "Reserve Your Seat",
-  logo = "CREATIVE\nINTELLIGENCE\nLAB",
-  videoUrl, 
+const LighterCTAFooter: React.FC<LighterCTAFooterProps> = ({
+  title,
+  description,
+  emailPlaceholder,
+  ctaLabel,
+  logo,
+  videoUrl,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -110,4 +110,4 @@ const CTAFooter: React.FC<CTAFooterProps> = ({
   );
 };
 
-export default CTAFooter;
+export default LighterCTAFooter;
