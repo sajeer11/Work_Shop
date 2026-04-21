@@ -97,6 +97,7 @@ export interface DarkPageContent {
     description: string;
     emailPlaceholder: string;
     ctaLabel: string;
+    ctaHref: string;
     footerLinks: string[];
     copyrightText: string;
   };
@@ -156,4 +157,25 @@ export interface LightPageContent {
     ctaLabel: string;
     logo: string;
   };
+}
+
+export interface AuthPageContent {
+  badge: string;
+  title: string;
+  description: string;
+  submitLabel: string;
+  formAction: string;
+  alternatePrompt?: string;
+  alternateLabel?: string;
+  alternateHref?: string;
+  fields: Array<{
+    name: string;
+    label: string;
+    type: "text" | "email" | "password" | "tel";
+    placeholder: string;
+  }>;
+}
+
+export interface AuthPagesContent {
+  register: AuthPageContent;
 }

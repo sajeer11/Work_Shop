@@ -6,6 +6,7 @@ interface DarkCTAFooterProps {
   title: React.ReactNode;
   description: string;
   ctaLabel: string;
+  ctaHref: string;
   emailPlaceholder: string;
   footerLinks: string[];
   copyrightText: string;
@@ -16,6 +17,7 @@ export default function DarkCTAFooter({
   title,
   description,
   ctaLabel,
+  ctaHref,
   emailPlaceholder,
   footerLinks,
   copyrightText,
@@ -83,17 +85,24 @@ export default function DarkCTAFooter({
             {description}
           </p>
 
-          <div className="mx-auto mt-8 flex w-full max-w-xl flex-col rounded-2xl bg-[#FFFFFF1A] p-1.5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] sm:flex-row lg:rounded-full">
+          <form
+            id="dark-footer-form"
+            action={ctaHref}
+            method="get"
+            className="gap-2 mx-auto mt-8 flex w-full max-w-xl flex-col rounded-2xl bg-[#FFFFFF1A] p-1.5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] lg:flex-row lg:rounded-full"
+          >
             <input
+              name="email"
               type="email"
               placeholder={emailPlaceholder}
               className="min-w-0 flex-1 rounded-full bg-[#FFFFFF1A] px-5 py-3 text-sm text-white placeholder:text-white/28 outline-none"
+              required
             />
 
-            <button className={footerButtonClassName}>
+            <button type="submit" className={`${footerButtonClassName} w-full lg:w-auto`}>
               {ctaLabel}
             </button>
-          </div>
+          </form>
         </div>
 
         <div className="mt-16 pt-6 text-xs text-white/40">
