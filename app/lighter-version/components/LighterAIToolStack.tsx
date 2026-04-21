@@ -9,17 +9,17 @@ interface Tool {
   description: string;
 }
 
-interface AIToolStackProps {
-  badge?: string;
-  title?: string;
-  subtitle?: string;
+interface LighterAIToolStackProps {
+  badge: string;
+  title: string;
+  subtitle: string;
   tools: Tool[];
 }
 
-const AIToolStack: React.FC<AIToolStackProps> = ({
-  badge = "THE AI TOOL STACK",
-  title = "TOOLS YOU'LL USE IN\nTHE ROOM",
-  subtitle = "No prior experience needed everything is taught from scratch.",
+const LighterAIToolStack: React.FC<LighterAIToolStackProps> = ({
+  badge,
+  title,
+  subtitle,
   tools,
 }) => {
   return (
@@ -83,5 +83,5 @@ const AIToolStack: React.FC<AIToolStackProps> = ({
   );
 };
 
-export default AIToolStack;
+export default LighterAIToolStack;
 

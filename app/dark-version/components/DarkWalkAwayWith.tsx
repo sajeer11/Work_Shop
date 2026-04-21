@@ -20,13 +20,16 @@ export default function DarkWalkAwayWith({
   imageUrl,
   imageAlt,
 }: DarkWalkAwayWithProps) {
+  const pillClassName =
+    "inline-flex rounded-full border border-white/12 bg-[linear-gradient(180deg,rgba(48,48,48,0.96),rgba(28,28,28,0.96))] px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-[#9BEA34] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-xl";
+
   return (
     <section className="relative w-full overflow-hidden rounded-[32px] bg-[#1a1a1a] px-6 py-10 sm:px-8 lg:px-12">
       <div className="pointer-events-none absolute inset-x-[38%] bottom-0 h-56 bg-[radial-gradient(circle,rgba(104,90,205,0.16),transparent_72%)]" />
       <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-[0.95fr_1.2fr]">
         <div className="rounded-[22px] border border-white/7 bg-[#1c1c1c]">
           <div className="border-b border-white/7 px-5 py-4">
-            <span className="inline-flex rounded-full border border-white/8 bg-white/4 px-4 py-1 text-[11px] uppercase tracking-[0.18em] text-[#9BEA34]">
+            <span className={pillClassName}>
               {badge}
             </span>
             <h2 className="mt-4 text-[clamp(2.1rem,4vw,3.4rem)] font-prompt leading-tight tracking-tight text-white">
@@ -39,8 +42,8 @@ export default function DarkWalkAwayWith({
                 key={item.text}
                 className="flex items-center gap-3 rounded-xl border border-white/7 bg-white/[0.02] px-4 py-3 text-sm text-white/72"
               >
-                <span className="flex h-4 w-4 items-center justify-center rounded-full border border-[#9BEA34]/45 text-[10px] text-[#9BEA34]">
-                  •
+                <span className="flex h-4 w-4 items-center justify-center rounded-full border border-[#FEB803]/45 text-[6px] text-[#FEB803]">
+                  ✔
                 </span>
                 {item.text}
               </li>

@@ -7,15 +7,15 @@ interface CardProps {
   description: string;
 }
 
-interface CreativeIntelligenceProps {
-  badge?: string;
+interface LighterCreativeIntelligenceProps {
+  badge: string;
   title: string;
   description: string;
   cards: CardProps[];
 }
 
-const CreativeIntelligence: React.FC<CreativeIntelligenceProps> = ({
-  badge = "THE FRAMEWORK",
+const LighterCreativeIntelligence: React.FC<LighterCreativeIntelligenceProps> = ({
+  badge,
   title,
   description,
   cards,
@@ -111,4 +111,4 @@ const CreativeIntelligence: React.FC<CreativeIntelligenceProps> = ({
   );
 };
 
-export default CreativeIntelligence;
+export default LighterCreativeIntelligence;

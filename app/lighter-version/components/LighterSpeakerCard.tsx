@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-interface SpeakerCardProps {
+interface LighterSpeakerCardProps {
   name: string;
   role: string;
   description: string;
@@ -10,7 +10,7 @@ interface SpeakerCardProps {
   speakerType?: string;
 }
 
-const SpeakerCard: React.FC<SpeakerCardProps> = ({
+const LighterSpeakerCard: React.FC<LighterSpeakerCardProps> = ({
   name,
   role,
   description,
@@ -79,4 +79,4 @@ const SpeakerCard: React.FC<SpeakerCardProps> = ({
   );
 };
 
-export default SpeakerCard;
+export default LighterSpeakerCard;

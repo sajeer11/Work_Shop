@@ -7,17 +7,17 @@ interface AgendaItem {
   description: string;
 }
 
-interface WorkshopAgendaProps {
-  badge?: string;
-  title?: string;
-  subtitle?: string;
+interface LighterWorkshopAgendaProps {
+  badge: string;
+  title: string;
+  subtitle: string;
   items: AgendaItem[];
 }
 
-const WorkshopAgenda: React.FC<WorkshopAgendaProps> = ({
-  badge = "WHAT YOU'LL COVER",
-  title = "WORKSHOP\nAGENDA",
-  subtitle = "09 modules, fully AI-driven each builds directly on the last.",
+const LighterWorkshopAgenda: React.FC<LighterWorkshopAgendaProps> = ({
+  badge,
+  title,
+  subtitle,
   items,
 }) => {
   return (
@@ -83,5 +83,5 @@ const WorkshopAgenda: React.FC<WorkshopAgendaProps> = ({
   );
 };
 
-export default WorkshopAgenda;
+export default LighterWorkshopAgenda;
 

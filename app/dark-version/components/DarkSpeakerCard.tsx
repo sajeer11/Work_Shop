@@ -17,6 +17,8 @@ export default function DarkSpeakerCard({
   imageUrl,
 }: DarkSpeakerCardProps) {
   const [first, second, third] = name.split(" ");
+  const pillClassName =
+    "inline-flex rounded-full border border-white/12 bg-[linear-gradient(180deg,rgba(48,48,48,0.96),rgba(28,28,28,0.96))] px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-[#9BEA34] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-xl";
 
   return (
     <section className="relative w-full overflow-hidden rounded-[32px] bg-[#171717] px-6 py-12 sm:px-8 lg:px-12">
@@ -30,7 +32,7 @@ export default function DarkSpeakerCard({
         </div>
 
         <div className="max-w-xl pt-2 text-center lg:pt-8 lg:text-left">
-          <span className="inline-flex rounded-full border border-white/8 bg-white/4 px-4 py-1 text-[11px] uppercase tracking-[0.18em] text-[#9BEA34]">
+          <span className={pillClassName}>
             {badge}
           </span>
           <h2 className="mt-5 text-[clamp(2.5rem,5vw,4.25rem)] font-prompt leading-[0.95] tracking-tight text-white">
