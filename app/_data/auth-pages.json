@@ -2,7 +2,7 @@
   "register": {
     "badge": "JOIN THE LAB",
     "title": "Create your account",
-    "description": "Reserve your place and keep the same Creative Intelligence Lab flow with a clean, dark signup experience.",
+    "description": "Reserve your place and keep the same Creative Intelligence Lab flow with a clean, signup experience.",
     "submitLabel": "Create Account",
     "formAction": "/dark-version",
     "fields": [
