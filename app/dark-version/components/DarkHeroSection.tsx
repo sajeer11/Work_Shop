@@ -29,15 +29,11 @@ export default function DarkHeroSection({
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-[#161616] px-4 pb-8 pt-8 sm:px-6 lg:px-10">
-      {/* Background glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(155,234,52,0.08),transparent_28%),radial-gradient(circle_at_50%_100%,rgba(104,90,205,0.12),transparent_30%)]" />
 
-      {/* Bottom center small line */}
       <div className="pointer-events-none absolute left-1/2 bottom-0 h-20 w-px -translate-x-1/2 bg-white/10" />
 
-      {/* Main layout */}
       <div className="relative z-10 mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-7xl flex-col">
-        {/* NAV */}
         <nav className="flex items-center gap-4">
           <div className="relative h-12 w-12 md:h-14 md:w-14">
             <Image
@@ -57,22 +53,17 @@ export default function DarkHeroSection({
           </a>
         </nav>
 
-        {/* HERO CONTENT */}
         <div className="flex flex-1 flex-col items-center justify-center text-center">
           <div className="mx-auto max-w-6xl">
             <span className="inline-flex items-center rounded-full border border-[#9BEA34]/30 bg-[#272b22] px-6 py-2 text-xs uppercase tracking-[0.18em] text-[#a7e64b] md:text-lg lg:text-lg">
               {badge}
             </span>
 
-            {/* Connected heading frame */}
             <div className="relative mt-8 flex items-center justify-center">
-              {/* Left connector */}
               <div className="pointer-events-none absolute left-[-5%] top-12 hidden h-44 w-32 rounded-tl-[56px] border-l border-t border-[#9BEA34]/35 lg:block" />
 
-              {/* Right connector */}
               <div className="pointer-events-none absolute right-[-5%] top-12 hidden h-44 w-32 rounded-tr-[56px] border-r border-t border-[#9BEA34]/35 lg:block" />
 
-              {/* Heading box area */}
               <div className="relative px-2 pt-8 sm:px-6 lg:px-12">
                 <h1 className="text-center font-prompt leading-none tracking-tight">
                   {headline}
@@ -93,7 +84,7 @@ export default function DarkHeroSection({
               </a>
 
               <a
-                href={ctaSecondary.href}
+                href="#workshop-agenda"
                 className={secondaryHeroButtonClassName}
               >
                 {ctaSecondary.label}
@@ -102,7 +93,6 @@ export default function DarkHeroSection({
           </div>
         </div>
 
-        {/* Info badges */}
         <div className="flex flex-wrap items-center justify-center gap-5 text-xs text-[#6C6C6C]">
           {infoBadges.map((info) => (
             <span key={info}>{info}</span>

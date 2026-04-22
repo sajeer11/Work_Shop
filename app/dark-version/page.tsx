@@ -58,8 +58,8 @@ export default function DarkVersionPage() {
           description={creativeIntelligence.description}
           cards={creativeIntelligence.cards}
         />
-
-        <DarkWorkshopAgenda
+<div  id="workshop-agenda">
+        <DarkWorkshopAgenda 
           badge={workshopAgenda.badge}
           title={
             <>
@@ -70,7 +70,7 @@ export default function DarkVersionPage() {
           subtitle={workshopAgenda.subtitle}
           items={workshopAgenda.items}
         />
-
+</div>
         <DarkAIToolStack
           badge={aiToolStack.badge}
           title={
