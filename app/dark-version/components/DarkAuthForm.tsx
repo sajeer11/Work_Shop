@@ -148,6 +148,8 @@ export default function DarkAuthForm({
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState<StepKey>("basic");
   const [hasRestoredState, setHasRestoredState] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [touched, setTouched] = useState<TouchedState>(initialTouchedState);
   const [values, setValues] = useState<FormState>(() => ({
     fullName: "",
@@ -310,8 +312,43 @@ export default function DarkAuthForm({
   const handleComplete = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    window.localStorage.removeItem(registerStorageKey);
-    setCurrentStep("complete");
+    void (async () => {
+      setIsSubmitting(true);
+      setSubmitError("");
+
+      try {
+        const response = await fetch("/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fullName: values.fullName,
+            email: values.email,
+            contactNumber: values.contactNumber,
+            currentStatus: values.currentStatus,
+            reason: values.reason,
+            exploredField: values.exploredField,
+            previousExperience: values.previousExperience,
+            seatPrice: `${payment.seatPriceCurrency} ${payment.seatPriceAmount}`,
+          }),
+        });
+
+        if (!response.ok) {
+          const data = (await response.json().catch(() => null)) as { message?: string } | null;
+          throw new Error(data?.message || "Unable to send your registration right now.");
+        }
+
+        window.localStorage.removeItem(registerStorageKey);
+        setCurrentStep("complete");
+      } catch (error) {
+        setSubmitError(
+          error instanceof Error ? error.message : "Unable to send your registration right now.",
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
+    })();
   };
 
   const renderError = (field: keyof FormState) => {
@@ -586,10 +623,15 @@ export default function DarkAuthForm({
                   </div>
                 </div>
 
+                {submitError ? (
+                  <p className="text-sm text-[#ff8f8f]">{submitError}</p>
+                ) : null}
+
                 <div className="mt-10 flex items-center justify-between gap-3">
                   <button
                     type="button"
                     onClick={handleBack}
+                    disabled={isSubmitting}
                     className="inline-flex items-center justify-center rounded-full font-prompt bg-[#263817] px-7 py-3 text-sm text-[#b8e17c] transition hover:brightness-110"
                   >
                     {payment.backLabel}
@@ -597,9 +639,10 @@ export default function DarkAuthForm({
 
                   <button
                     type="submit"
+                    disabled={isSubmitting}
                     className="inline-flex items-center justify-center rounded-full font-prompt bg-[#99ED43] px-8 py-3 text-sm font-medium text-[#1A1A1A] shadow-[0_10px_30px_rgba(153,237,67,0.18)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    {payment.confirmLabel}
+                    {isSubmitting ? "Sending..." : payment.confirmLabel}
                   </button>
                 </div>
               </form>
