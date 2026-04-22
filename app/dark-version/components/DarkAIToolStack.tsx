@@ -46,7 +46,7 @@ export default function DarkAIToolStack({
               <Image src={tool.iconSrc} alt={tool.iconAlt} fill sizes="40px" className="object-contain" />
             </div>
             <h3 className="mt-8 text-xl font-medium uppercase tracking-wide text-white">{tool.name}</h3>
-            <p className="mt-1 text-sm leading-relaxed text-[#DDDDDD]">{tool.description}</p>
+            <p className="mt-1 text-sm leading-relaxed text-[#DDDDDD]">{tool.description} </p>
           </article>
         ))}
       </div>
