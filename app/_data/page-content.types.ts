@@ -168,12 +168,60 @@ export interface AuthPageContent {
   alternatePrompt?: string;
   alternateLabel?: string;
   alternateHref?: string;
+  cancelLabel?: string;
+  reserveLabel?: string;
   fields: Array<{
     name: string;
     label: string;
-    type: "text" | "email" | "password" | "tel";
+    type: "text" | "email" | "password" | "tel" | "select";
     placeholder: string;
+    options?: Array<{
+      label: string;
+      value: string;
+    }>;
   }>;
+  questionnaire: {
+    title: string;
+    description: string;
+    reasonLabel: string;
+    reasonPlaceholder: string;
+    exploredLabel: string;
+    exploredOptions: Array<{
+      label: string;
+      value: "yes" | "no";
+    }>;
+    experienceLabel: string;
+    experienceOptionalLabel: string;
+    experiencePlaceholder: string;
+    nextLabel: string;
+    backLabel: string;
+  };
+  payment: {
+    title: string;
+    description: string;
+    heading: string;
+    subheading: string;
+    seatPriceLabel: string;
+    seatPriceCurrency: string;
+    seatPriceAmount: string;
+    noteLabel: string;
+    noteText: string;
+    methodsLabel: string;
+    methods: Array<{
+      id: string;
+      name: string;
+      account: string;
+      accent: string;
+    }>;
+    uploadTitle: string;
+    uploadDescription: string;
+    backLabel: string;
+    confirmLabel: string;
+  };
+  complete: {
+    title: string;
+    description: string;
+  };
 }
 
 export interface AuthPagesContent {

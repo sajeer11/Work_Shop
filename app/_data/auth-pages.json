@@ -1,35 +1,123 @@
 {
   "register": {
     "badge": "JOIN THE LAB",
-    "title": "Create your account",
-    "description": "Reserve your place and keep the same Creative Intelligence Lab flow with a clean, signup experience.",
-    "submitLabel": "Create Account",
+    "title": "Basic Information",
+    "description": "Reserve your place and share your details before moving to the next step.",
+    "submitLabel": "Next",
     "formAction": "/dark-version",
+    "cancelLabel": "Cancel",
+    "reserveLabel": "Reserve Your Seat",
     "fields": [
       {
-        "name": "firstName",
-        "label": "First Name",
+        "name": "fullName",
+        "label": "Full Name",
         "type": "text",
-        "placeholder": "Enter your first name"
-      },
-      {
-        "name": "lastName",
-        "label": "Last Name",
-        "type": "text",
-        "placeholder": "Enter your last name"
+        "placeholder": "Arham Ejaz"
       },
       {
         "name": "email",
         "label": "Email Address",
         "type": "email",
-        "placeholder": "Enter your email address"
+        "placeholder": "arham@gmail.com"
       },
       {
-        "name": "contact",
+        "name": "contactNumber",
         "label": "Contact Number",
         "type": "tel",
-        "placeholder": "Enter your contact number"
+        "placeholder": "(00) 000-0000000"
+      },
+      {
+        "name": "currentStatus",
+        "label": "Current Status",
+        "type": "select",
+        "placeholder": "Select your current status",
+        "options": [
+          {
+            "label": "Student",
+            "value": "Student"
+          },
+          {
+            "label": "Freelancer",
+            "value": "Freelancer"
+          },
+          {
+            "label": "Working Professional",
+            "value": "Working Professional"
+          },
+          {
+            "label": "Business Owner",
+            "value": "Business Owner"
+          }
+        ]
       }
-    ]
+    ],
+    "questionnaire": {
+      "title": "Tell Us More About You",
+      "description": "Answer a few quick questions so we can understand your goals before confirming your seat.",
+      "reasonLabel": "Why do you want to attend this workshop?",
+      "reasonPlaceholder": "Type here",
+      "exploredLabel": "Have you ever explored this field before?",
+      "exploredOptions": [
+        {
+          "label": "Yes",
+          "value": "yes"
+        },
+        {
+          "label": "No",
+          "value": "no"
+        }
+      ],
+      "experienceLabel": "If yes, what have you done so far?",
+      "experienceOptionalLabel": "(Optional)",
+      "experiencePlaceholder": "Type here",
+      "nextLabel": "Next",
+      "backLabel": "Back"
+    },
+    "payment": {
+      "title": "Finalize Your Reservations",
+      "description": "Review the seat price first so you can make the payment accordingly.",
+      "heading": "Finalize Your Reservations",
+      "subheading": "",
+      "seatPriceLabel": "Seat Price",
+      "seatPriceCurrency": "PKR",
+      "seatPriceAmount": "800",
+      "noteLabel": "Note:",
+      "noteText": "This workshop is also part of our talent discovery initiative.\nParticipants who perform well may be considered for future opportunities at Brand Republic.\n\nOnly shortlisted candidates will receive:\nA confirmation email\nPayment details\nFinal seat confirmation after fee submission",
+      "methodsLabel": "You can transfer money by",
+      "methods": [
+        {
+          "id": "easypaisa",
+          "name": "EasyPaisa",
+          "account": "(XX) XXX-XXXXXXXX",
+          "accent": "EP"
+        },
+        {
+          "id": "nayapay",
+          "name": "NayaPay",
+          "account": "(XX) XXX-XXXXXXXX",
+          "accent": "NP"
+        },
+        {
+          "id": "sadapay",
+          "name": "SadaPay",
+          "account": "(XX) XXX-XXXXXXXX",
+          "accent": "SP"
+        },
+        {
+          "id": "jazzcash",
+          "name": "JazzCash",
+          "account": "(XX) XXX-XXXXXXXX",
+          "accent": "JC"
+        }
+      ],
+      "uploadTitle": "Upload Payment Proof",
+      "uploadDescription": "Upload your paid screenshot here.",
+      "backLabel": "Back",
+      "confirmLabel": "Confirm My Seat"
+    },
+    "complete": {
+      "title": "Thank You!",
+      "description": "Your reservation details have been captured. Our team will review your submission and contact you on"
+    }
   }
 }
