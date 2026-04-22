@@ -430,7 +430,7 @@ export default function DarkAuthForm({
                 <div className="mt-14 text-center">
                  
 
-                  <h1 className="mt-6 text-6xl leading-[0.96] tracking-[-0.04em] text-[#FFFFFF] font-sans ">
+                  <h1 className="mt-6 lg:text-6xl md:text-5xl text-5xl  leading-[0.96] tracking-[-0.04em] text-[#FFFFFF] font-sans ">
                     {currentStep === "basic" && title}
                     {currentStep === "questionnaire" && questionnaire.title}
                     {currentStep === "payment" && payment.title}
