@@ -19,22 +19,7 @@ export default function DarkVersionPage() {
       <DarkHeroSection
         logoSrc={hero.logoSrc}
         badge={hero.badge}
-        headline={
-          <span className="relative inline-flex flex-col items-center">
-            <span
-              className="relative z-0 block bg-clip-text text-[clamp(4.9rem,12vw,10.2rem)] font-black leading-[0.84] tracking-[-0.065em] text-transparent drop-shadow-[0_10px_30px_rgba(153,237,67,0.18)]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(180deg, #99ED43 50.21%, #000000 128.22%)",
-              }}
-            >
-              {hero.headline.top}
-            </span>
-            <span className="relative z-10 -mt-7 block text-[clamp(3.3rem,8.2vw,6.5rem)] font-light italic leading-[0.78] tracking-[-0.065em] text-white sm:-mt-9">
-              {hero.headline.bottom}
-            </span>
-          </span>
-        }
+        headline={hero.headline}
         description={hero.description}
         ctaPrimary={hero.ctaPrimary}
         ctaSecondary={hero.ctaSecondary}
@@ -47,54 +32,30 @@ export default function DarkVersionPage() {
 
         <DarkCreativeIntelligence
           badge={creativeIntelligence.badge}
-          title={
-            <>
-              <span className="text-[#9BEA34]">{creativeIntelligence.title.accent}</span>{" "}
-              {creativeIntelligence.title.text}
-              <br />
-              {creativeIntelligence.title.secondLine}
-            </>
-          }
+          title={creativeIntelligence.title}
           description={creativeIntelligence.description}
           cards={creativeIntelligence.cards}
         />
 <div  id="workshop-agenda">
         <DarkWorkshopAgenda 
           badge={workshopAgenda.badge}
-          title={
-            <>
-              {workshopAgenda.title.text}{" "}
-              <span className="text-[#9BEA34] italic">{workshopAgenda.title.accent}</span>
-            </>
-          }
+          title={workshopAgenda.title}
           subtitle={workshopAgenda.subtitle}
           items={workshopAgenda.items}
         />
 </div>
+
+<div className="mt-12">
         <DarkAIToolStack
           badge={aiToolStack.badge}
-          title={
-            <>
-              <span className="text-[#9BEA34] italic">{aiToolStack.title.accent}</span>{" "}
-              {aiToolStack.title.text}
-              <br />
-              {aiToolStack.title.secondLine}
-            </>
-          }
+          title={aiToolStack.title}
           subtitle={aiToolStack.subtitle}
           tools={aiToolStack.tools}
         />
-
+</div>
         <DarkWalkAwayWith
           badge={walkAwayWith.badge}
-          title={
-            <>
-              {walkAwayWith.title.prefix}{" "}
-              <span className="text-[#9BEA34]">{walkAwayWith.title.accentLineOne}</span>
-              <br />
-              <span className="text-[#9BEA34]">{walkAwayWith.title.accentLineTwo}</span>
-            </>
-          }
+          title={walkAwayWith.title}
           results={walkAwayWith.results}
           imageUrl={walkAwayWith.imageUrl}
           imageAlt={walkAwayWith.imageAlt}
@@ -103,12 +64,7 @@ export default function DarkVersionPage() {
 
       <DarkCTAFooter
         logoSrc={ctaFooter.logoSrc}
-        title={
-          <>
-            <span className="text-[#9BEA34]">{ctaFooter.title.accent}</span>{" "}
-            {ctaFooter.title.text}
-          </>
-        }
+        title={ctaFooter.title}
         description={ctaFooter.description}
         emailPlaceholder={ctaFooter.emailPlaceholder}
         ctaLabel={ctaFooter.ctaLabel}

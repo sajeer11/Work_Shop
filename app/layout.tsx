@@ -30,23 +30,39 @@ const geistMono = local({
 const promt = local({
   src: [
     {
-      path: "../public/font/Prompt/Prompt-Regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
+  path: "../public/font/Prompt/Prompt-Regular.ttf",
+  weight: "400",
+  style: "normal",
+},
+{
+  path: "../public/font/Prompt/Prompt-Bold.ttf",
+  weight: "700",
+  style: "bold",
+},
+{
+  path: "../public/font/Prompt/Prompt-Italic.ttf",
+  weight: "400",
+  style: "italic",
+},
   ],
+  
   variable: "--font-prompt",
 });
 
 const plusJakartaSans = local({
   src: [
-    {
-      path: "../public/font/Prompt/Plus_Jakarta_Sans/static/PlusJakartaSans-Regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
+{
+  path: "../public/font/Plus_Jakarta_Sans/PlusJakartaSans-Medium.ttf",
+  weight: "500",
+  style: "normal",
+},
+{
+  path: "../public/font/Plus_Jakarta_Sans/PlusJakartaSans-Italic.ttf",
+  weight: "700",
+  style: "italic",
+}
   ],
-  variable: "--font-plus-jakarta-sans",
+  variable: "--font-plus",
 });
 
 export const metadata: Metadata = {

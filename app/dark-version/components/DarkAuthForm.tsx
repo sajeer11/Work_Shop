@@ -13,11 +13,14 @@ type BasicFormState = {
   fullName: string;
   email: string;
   contactNumber: string;
+  age: string;
   currentStatus: string;
 };
 
 type QuestionnaireState = {
   reason: string;
+  quickUnderstanding: string;
+  quickUnderstandingOther: string;
   exploredField: "" | "yes" | "no";
   previousExperience: string;
 };
@@ -51,8 +54,11 @@ const initialTouchedState: TouchedState = {
   fullName: false,
   email: false,
   contactNumber: false,
+  age: false,
   currentStatus: false,
   reason: false,
+  quickUnderstanding: false,
+  quickUnderstandingOther: false,
   exploredField: false,
   paymentMethod: false,
   paymentProofFile: false,
@@ -64,6 +70,11 @@ function isValidEmail(value: string) {
 
 function isValidPhoneNumber(value: string) {
   return /^\d{11}$/.test(value);
+}
+
+function isValidAge(value: string) {
+  const age = Number(value);
+  return /^\d{1,3}$/.test(value) && age >= 1 && age <= 120;
 }
 
 function getStepIndex(step: StepKey) {
@@ -82,10 +93,19 @@ function getFieldError(field: keyof FormState, values: FormState) {
       return isValidPhoneNumber(values.contactNumber)
         ? ""
         : "Enter a valid 11-digit phone number.";
+    case "age":
+      if (!values.age.trim()) return "Age is required.";
+      return isValidAge(values.age) ? "" : "Enter a valid age.";
     case "currentStatus":
       return values.currentStatus.trim() ? "" : "Please select your current status.";
     case "reason":
       return values.reason.trim() ? "" : "Tell us why you want to attend.";
+    case "quickUnderstanding":
+      return values.quickUnderstanding.trim() ? "" : "Please select one option.";
+    case "quickUnderstandingOther":
+      return values.quickUnderstanding === "Other" && !values.quickUnderstandingOther.trim()
+        ? "Please specify your reason."
+        : "";
     case "exploredField":
       return values.exploredField ? "" : "Please choose Yes or No.";
     case "paymentMethod":
@@ -100,9 +120,9 @@ function getFieldError(field: keyof FormState, values: FormState) {
 function getStepFields(step: StepKey): Array<keyof FormState> {
   switch (step) {
     case "basic":
-      return ["fullName", "email", "contactNumber", "currentStatus"];
+      return ["fullName", "email", "contactNumber", "age", "currentStatus"];
     case "questionnaire":
-      return ["reason", "exploredField"];
+      return ["exploredField", "previousExperience", "reason", "quickUnderstanding", "quickUnderstandingOther"];
     case "payment":
       return [];
     default:
@@ -155,8 +175,11 @@ export default function DarkAuthForm({
     fullName: "",
     email: "",
     contactNumber: "",
+    age: "",
     currentStatus: "",
     reason: "",
+    quickUnderstanding: "",
+    quickUnderstandingOther: "",
     exploredField: "",
     previousExperience: "",
     paymentMethod: "",
@@ -186,8 +209,11 @@ export default function DarkAuthForm({
           fullName: parsedState.fullName,
           email: parsedState.email || emailFromSearch,
           contactNumber: parsedState.contactNumber,
+          age: parsedState.age ?? "",
           currentStatus: parsedState.currentStatus,
           reason: parsedState.reason,
+          quickUnderstanding: parsedState.quickUnderstanding ?? "",
+          quickUnderstandingOther: parsedState.quickUnderstandingOther ?? "",
           exploredField: parsedState.exploredField,
           previousExperience: parsedState.previousExperience,
           paymentMethod: parsedState.paymentMethod,
@@ -223,8 +249,11 @@ export default function DarkAuthForm({
       fullName: values.fullName,
       email: values.email,
       contactNumber: values.contactNumber,
+      age: values.age,
       currentStatus: values.currentStatus,
       reason: values.reason,
+      quickUnderstanding: values.quickUnderstanding,
+      quickUnderstandingOther: values.quickUnderstandingOther,
       exploredField: values.exploredField,
       previousExperience: values.previousExperience,
       paymentMethod: values.paymentMethod,
@@ -240,7 +269,7 @@ export default function DarkAuthForm({
     }
 
     const timeoutId = window.setTimeout(() => {
-      router.push("/dark-version");
+      router.push("/");
     }, 2000);
 
     return () => window.clearTimeout(timeoutId);
@@ -270,6 +299,8 @@ export default function DarkAuthForm({
       const nextValue =
         field === "contactNumber"
           ? event.target.value.replace(/\D/g, "").slice(0, 11)
+          : field === "age"
+            ? event.target.value.replace(/\D/g, "").slice(0, 3)
           : event.target.value;
 
       updateField(field, nextValue);
@@ -326,8 +357,11 @@ export default function DarkAuthForm({
             fullName: values.fullName,
             email: values.email,
             contactNumber: values.contactNumber,
+            age: values.age,
             currentStatus: values.currentStatus,
             reason: values.reason,
+            quickUnderstanding: values.quickUnderstanding,
+            quickUnderstandingOther: values.quickUnderstandingOther,
             exploredField: values.exploredField,
             previousExperience: values.previousExperience,
             seatPrice: `${payment.seatPriceCurrency} ${payment.seatPriceAmount}`,
@@ -405,7 +439,7 @@ export default function DarkAuthForm({
                       <React.Fragment key={step.key}>
                         <div
                           className={[
-                            "inline-flex min-w-[128px] items-center justify-center rounded-full border px-4 py-2 text-[11px] font-medium tracking-[0.01em] transition sm:min-w-[152px] sm:text-xs",
+                            "inline-flex min-w-[128px] items-center justify-center rounded-full border px-4 py-2 text-[13.5px] font-medium tracking-[0.01em] transition sm:min-w-[152px] sm:text-xs",
                             status === "current" || status === "complete"
                               ? "border-[#99ED43] bg-[#22281d] text-[#daf8ad]"
                               : "border-white/14 bg-white/[0.03] text-white/38",
@@ -430,13 +464,13 @@ export default function DarkAuthForm({
                 <div className="mt-14 text-center">
                  
 
-                  <h1 className="mt-6 lg:text-6xl md:text-5xl text-5xl  leading-[0.96] tracking-[-0.04em] text-[#FFFFFF] font-sans ">
+                  <h1 className="mt-6 lg:text-6xl md:text-5xl text-5xl  leading-[0.96] tracking-[-0.04em] text-[#FFFFFF]  font-medium text-[54px] ">
                     {currentStep === "basic" && title}
                     {currentStep === "questionnaire" && questionnaire.title}
                     {currentStep === "payment" && payment.title}
                   </h1>
 
-                  <p className="mx-auto mt-4 max-w-[560px] text-sm leading-relaxed text-[#DDDDDD] font-prompt ">
+                  <p className="mx-auto mt-4 max-w-[560px] text-sm leading-relaxed text-[#DDDDDD] font-prompt font-normal text-[15px]">
                     {currentStep === "basic" && description}
                     {currentStep === "questionnaire" && questionnaire.description}
                     {currentStep === "payment" && payment.description}
@@ -458,11 +492,11 @@ export default function DarkAuthForm({
                   </div>
                 </div>
 
-                <h1 className="mt-10 text-[clamp(2.75rem,7vw,4.4rem)] font-sans leading-none tracking-[-0.05em] text-white">
+                <h1 className="mt-10 text-[clamp(2.75rem,7vw,4.4rem)] font-sans font-medium leading-none tracking-[-0.05em] text-[#FFFFFF]">
                   {complete.title}
                 </h1>
 
-                <p className="mx-auto mt-4 max-w-[520px] text-sm leading-relaxed text-white/58 font-prompt">
+                <p className="mx-auto mt-4 max-w-[520px] text-[15px] leading-relaxed text-[#DDDDDD] font-prompt font-normal">
                   {complete.description}{" "}
                   <span className="text-white/80">{values.email || "your email address"}</span>.
                 </p>
@@ -474,7 +508,7 @@ export default function DarkAuthForm({
                 {fields.map((field) => (
                   <label
                     key={field.name}
-                    className="grid items-start gap-3 md:grid-cols-[170px_minmax(0,1fr)] md:gap-12 text-[#FFFFFF]"
+                    className="grid items-start gap-3 md:grid-cols-[170px_minmax(0,1fr)] md:gap-12 font-medium font-sans text-[#FFFFFF] text-[15px]"
                   >
                     <span className="pt-3 text-sm text-white  font-sans">{field.label}</span>
                     <div>
@@ -512,7 +546,7 @@ export default function DarkAuthForm({
                           onBlur={() =>
                             setTouched((current) => ({ ...current, [field.name]: true }))
                           }
-                          inputMode={field.name === "contactNumber" ? "numeric" : undefined}
+                          inputMode={field.name === "contactNumber" || field.name === "age" ? "numeric" : undefined}
                           maxLength={field.name === "contactNumber" ? 11 : undefined}
                            className="w-full rounded-[10px] border border-white/6 bg-[#252525] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-white/24 focus:border-[#99ED43]/55"
                         />
@@ -528,7 +562,7 @@ export default function DarkAuthForm({
               <div className="mx-auto mt-14 grid w-full max-w-[760px] gap-4">
                 <div className="rounded-[14px] border border-white/5 bg-[#232323] p-4">
                   <label className="block">
-                    <span className="mb-3 block text-sm text-[#FFFFFF] font-sans">
+                    <span className="mb-3 block text-sm text-[#FFFFFF] font-medium ">
                       {questionnaire.reasonLabel}
                     </span>
                     <textarea
@@ -538,13 +572,13 @@ export default function DarkAuthForm({
                       onChange={handleTextFieldChange("reason")}
                       onBlur={() => setTouched((current) => ({ ...current, reason: true }))}
                       rows={5}
-                      className="w-full resize-none rounded-[12px] border border-white/6 bg-[#2b2b2b] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-white/24 focus:border-[#99ED43]/55"
+                      className="w-full resize-none rounded-[12px] font-sans text-sm border border-white/6 bg-[#2b2b2b] px-4 py-3.5 text-white outline-none transition placeholder:text-white/24 focus:border-[#99ED43]/55"
                     />
                   </label>
                   {renderError("reason")}
                 </div>
 
-                <div className="rounded-[14px] border border-white/5 bg-[#232323] p-4 font-sans">
+                <div className="rounded-[14px] border border-white/5 bg-[#232323] p-4 font-medium text-[15px]">
                   <span className="mb-4 block text-sm text-[#FFFFFF] font-sans">
                     {questionnaire.exploredLabel}
                   </span>
@@ -562,9 +596,9 @@ export default function DarkAuthForm({
                             setTouched((current) => ({ ...current, exploredField: true }));
                           }}
                           className={[
-                            "flex items-center gap-3 rounded-[10px] border px-4 py-3 text-left  font-prompt transition",
+                            "flex items-center gap-3 rounded-[10px] border px-4 py-3 text-left  font-prompt text-[15px] transition",
                             isSelected
-                              ? "border-[#99ED43] bg-[#303729] text-white"
+                              ? "border-[#99ED43] bg-[#303729] text-[#FFFFFF]"
                               : "border-white/6 bg-[#2b2b2b] text-white/56 hover:border-white/16",
                           ].join(" ")}
                           aria-pressed={isSelected}
@@ -585,9 +619,9 @@ export default function DarkAuthForm({
 
                 <div className="rounded-[14px] border border-white/5 bg-[#232323] p-4">
                   <label className="block">
-                    <span className="mb-3 block text-sm text-white/84 font-sans">
+                    <span className="mb-3 block text-sm text-[#FFFFFF] font-medium text-[15px]">
                       {questionnaire.experienceLabel}{" "}
-                      <span className="text-white/40">{questionnaire.experienceOptionalLabel}</span>
+                      <span className=" font-medium text-[#FFFFFF]">{questionnaire.experienceOptionalLabel}</span>
                     </span>
                     <textarea
                       name="previousExperience"
@@ -599,6 +633,62 @@ export default function DarkAuthForm({
                     />
                   </label>
                 </div>
+
+                <div className="rounded-[14px] border border-white/5 bg-[#232323] p-4">
+                  <span className="mb-4 block text-sm font-medium text-[#FFFFFF]">
+                    {questionnaire.quickUnderstandingLabel}
+                  </span>
+
+                  <div className="grid gap-3 font-prompt">
+                    {questionnaire.quickUnderstandingOptions.map((option) => {
+                      const isSelected = values.quickUnderstanding === option.value;
+
+                      return (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => {
+                            updateField("quickUnderstanding", option.value);
+                            if (option.value !== "Other") {
+                              updateField("quickUnderstandingOther", "");
+                            }
+                            setTouched((current) => ({ ...current, quickUnderstanding: true }));
+                          }}
+                          className={[
+                            "flex items-center gap-3 rounded-[10px] border px-4 py-3 text-left text-[15px] transition",
+                            isSelected
+                              ? "border-[#99ED43] bg-[#303729] text-[#FFFFFF]"
+                              : "border-white/6 bg-[#2b2b2b] text-white/56 hover:border-white/16",
+                          ].join(" ")}
+                          aria-pressed={isSelected}
+                        >
+                          <span
+                            className={[
+                              "h-3 w-3 rounded-full border",
+                              isSelected ? "border-[#99ED43] bg-[#99ED43]" : "border-white/24 bg-transparent",
+                            ].join(" ")}
+                          />
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {values.quickUnderstanding === "Other" ? (
+                    <input
+                      name="quickUnderstandingOther"
+                      type="text"
+                      placeholder={questionnaire.quickUnderstandingOtherPlaceholder}
+                      value={values.quickUnderstandingOther}
+                      onChange={handleTextFieldChange("quickUnderstandingOther")}
+                      onBlur={() => setTouched((current) => ({ ...current, quickUnderstandingOther: true }))}
+                      className="mt-3 w-full rounded-[10px] border border-white/6 bg-[#2b2b2b] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-white/24 focus:border-[#99ED43]/55"
+                    />
+                  ) : null}
+
+                  {renderError("quickUnderstanding")}
+                  {renderError("quickUnderstandingOther")}
+                </div>
               </div>
             ) : null}
 
@@ -606,20 +696,20 @@ export default function DarkAuthForm({
               <form onSubmit={handleComplete} className="mx-auto mt-12 w-full max-w-[760px]">
                 <div className="rounded-[14px] border border-white/5 bg-[#232323] p-4">
                   
-                  <p className="font-prompt text-gray-300 text-center">{payment.subheading}</p>
+                  <p className="font-medium text-[#FFFFFF] text-[15px] text-center">{payment.subheading}</p>
                   <p className="text-sm text-white/82">{payment.seatPriceLabel}</p>
                   <div className="mt-2 flex items-start gap-2 text-[#99ED43]">
                     <span className="pt-2 text-[0.95rem] font-medium leading-none tracking-[0.02em]">
                       {payment.seatPriceCurrency}
                     </span>
-                    <span className="text-[3.15rem] font-prompt leading-none">
+                    <span className="text-[2.45rem] font-medium leading-none">
                       {payment.seatPriceAmount}
                     </span>
                   </div>
 
                   <div className="mt-5 text-sm leading-relaxed text-white/52">
-                    <p className="text-white/76">{payment.noteLabel}</p>
-                    <p className="mt-2 whitespace-pre-line italic">{payment.noteText}</p>
+                    <p className="text-[#FFFFFF] font-medium text-[15px]">{payment.noteLabel}</p>
+                    <p className="text-[#DDDDDD] font-prompt  mt-2 whitespace-pre-line italic">{payment.noteText}</p>
                   </div>
                 </div>
 

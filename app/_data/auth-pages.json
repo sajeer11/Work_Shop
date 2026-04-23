@@ -27,6 +27,12 @@
         "placeholder": "(00) 000-0000000"
       },
       {
+        "name": "age",
+        "label": "Age",
+        "type": "text",
+        "placeholder": "24"
+      },
+      {
         "name": "currentStatus",
         "label": "Current Status",
         "type": "select",
@@ -52,11 +58,43 @@
       }
     ],
     "questionnaire": {
-      "title": "Tell Us More About You",
+      "title": "Quick Understanding",
       "description": "Answer a few quick questions so we can understand your goals before confirming your seat.",
       "reasonLabel": "Why do you want to attend this workshop?",
       "reasonPlaceholder": "Type here",
-      "exploredLabel": "Have you ever explored this field before?",
+      "quickUnderstandingLabel": "Quick Understanding (Select one)",
+      "quickUnderstandingOtherPlaceholder": "Other (please specify)",
+      "quickUnderstandingOptions": [
+        {
+          "label": "To learn new practical skills and improve my knowledge",
+          "value": "To learn new practical skills and improve my knowledge"
+        },
+        {
+          "label": "To enhance my career growth and job opportunities",
+          "value": "To enhance my career growth and job opportunities"
+        },
+        {
+          "label": "To gain hands-on experience through real examples and practice",
+          "value": "To gain hands-on experience through real examples and practice"
+        },
+        {
+          "label": "To explore a new field/interest",
+          "value": "To explore a new field/interest"
+        },
+        {
+          "label": "To network and connect with professionals and peers",
+          "value": "To network and connect with professionals and peers"
+        },
+        {
+          "label": "To understand industry trends and tools",
+          "value": "To understand industry trends and tools"
+        },
+        {
+          "label": "Other (please specify)",
+          "value": "Other"
+        }
+      ],
+      "exploredLabel": "Have you ever explored this field before? (Yes/No)",
       "exploredOptions": [
         {
           "label": "Yes",
@@ -74,7 +112,7 @@
       "backLabel": "Back"
     },
     "payment": {
-      "title": "Finalize Your Reservations",
+      "title": "Finalized Your Reservations",
       "description": "Review the seat price first so you can make the payment accordingly.",
       "heading": "Finalize Your Reservations",
       "subheading": "",
@@ -82,7 +120,7 @@
       "seatPriceCurrency": "PKR",
       "seatPriceAmount": "800",
       "noteLabel": "Note:",
-      "noteText": "This workshop is also part of our talent discovery initiative.\nParticipants who perform well may be considered for future opportunities at Brand Republic.\n\nOnly shortlisted candidates will receive:\nA confirmation email\nPayment details\nFinal seat confirmation after fee submission",
+      "noteText": "This workshop is also part of our talent discovery initiative.\nParticipants who perform well may be considered for future opportunities at Brand\nRepublic.\n \nOnly shortlisted candidates will receive:\n- A confirmation email\n- Payment details\n- Final seat confirmation after fee submission",
       "methodsLabel": "You can transfer money by",
       "methods": [
         {

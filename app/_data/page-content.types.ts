@@ -173,7 +173,7 @@ export interface AuthPageContent {
   fields: Array<{
     name: string;
     label: string;
-    type: "text" | "email" | "password" | "tel" | "select";
+    type: "text" | "email" | "password" | "tel" | "select" | "number";
     placeholder: string;
     options?: Array<{
       label: string;
@@ -185,6 +185,12 @@ export interface AuthPageContent {
     description: string;
     reasonLabel: string;
     reasonPlaceholder: string;
+    quickUnderstandingLabel: string;
+    quickUnderstandingOtherPlaceholder: string;
+    quickUnderstandingOptions: Array<{
+      label: string;
+      value: string;
+    }>;
     exploredLabel: string;
     exploredOptions: Array<{
       label: string;

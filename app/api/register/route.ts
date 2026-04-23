@@ -5,8 +5,11 @@ type RegisterPayload = {
   fullName?: string;
   email?: string;
   contactNumber?: string;
+  age?: string;
   currentStatus?: string;
   reason?: string;
+  quickUnderstanding?: string;
+  quickUnderstandingOther?: string;
   exploredField?: "yes" | "no" | "";
   previousExperience?: string;
   seatPrice?: string;
@@ -49,14 +52,21 @@ export async function POST(request: Request) {
     const fullName = body.fullName?.trim() ?? "";
     const email = body.email?.trim() ?? "";
     const contactNumber = body.contactNumber?.trim() ?? "";
+    const age = body.age?.trim() ?? "";
     const currentStatus = body.currentStatus?.trim() ?? "";
     const reason = body.reason?.trim() ?? "";
+    const quickUnderstanding = body.quickUnderstanding?.trim() ?? "";
+    const quickUnderstandingOther = body.quickUnderstandingOther?.trim() ?? "";
     const exploredField = body.exploredField ?? "";
     const previousExperience = body.previousExperience?.trim() ?? "";
     const seatPrice = body.seatPrice?.trim() ?? "";
 
-    if (!fullName || !email || !contactNumber || !currentStatus || !reason || !exploredField) {
+    if (!fullName || !email || !contactNumber || !age || !currentStatus || !reason || !quickUnderstanding || !exploredField) {
       return NextResponse.json({ message: "Missing required form fields." }, { status: 400 });
+    }
+
+    if (quickUnderstanding === "Other" && !quickUnderstandingOther) {
+      return NextResponse.json({ message: "Please specify your reason." }, { status: 400 });
     }
 
     if (!isValidEmail(email)) {
@@ -65,6 +75,10 @@ export async function POST(request: Request) {
 
     if (!isValidPhoneNumber(contactNumber)) {
       return NextResponse.json({ message: "Invalid phone number." }, { status: 400 });
+    }
+
+    if (!/^\d{1,3}$/.test(age) || Number(age) < 1 || Number(age) > 120) {
+      return NextResponse.json({ message: "Invalid age." }, { status: 400 });
     }
 
     const host = requireEnv("SMTP_HOST");
@@ -86,6 +100,8 @@ export async function POST(request: Request) {
     });
 
     const exploredLabel = exploredField === "yes" ? "Yes" : "No";
+    const quickUnderstandingLabel =
+      quickUnderstanding === "Other" ? `Other - ${quickUnderstandingOther}` : quickUnderstanding;
     const workshopLabel = "Munneb Workshop | Brand Republic";
 
     await transporter.sendMail({
@@ -100,10 +116,12 @@ export async function POST(request: Request) {
         `Full Name: ${fullName}`,
         `Email: ${email}`,
         `Contact Number: ${contactNumber}`,
+        `Age: ${age}`,
         `Current Status: ${currentStatus}`,
         `Seat Price: ${seatPrice || "N/A"}`,
         "",
         `Why do you want to attend?: ${reason}`,
+        `Quick Understanding: ${quickUnderstandingLabel}`,
         `Explored this field before?: ${exploredLabel}`,
         `Previous experience: ${previousExperience || "Not provided"}`,
       ].join("\n"),
@@ -116,10 +134,12 @@ export async function POST(request: Request) {
             <tr><td><strong>Full Name</strong></td><td>${fullName}</td></tr>
             <tr><td><strong>Email</strong></td><td>${email}</td></tr>
             <tr><td><strong>Contact Number</strong></td><td>${contactNumber}</td></tr>
+            <tr><td><strong>Age</strong></td><td>${age}</td></tr>
             <tr><td><strong>Current Status</strong></td><td>${currentStatus}</td></tr>
             <tr><td><strong>Seat Price</strong></td><td>${seatPrice || "N/A"}</td></tr>
             <tr><td><strong>Explored this field before?</strong></td><td>${exploredLabel}</td></tr>
             <tr><td valign="top"><strong>Why do you want to attend?</strong></td><td>${reason}</td></tr>
+            <tr><td valign="top"><strong>Quick Understanding</strong></td><td>${quickUnderstandingLabel}</td></tr>
             <tr><td valign="top"><strong>Previous experience</strong></td><td>${previousExperience || "Not provided"}</td></tr>
           </table>
         </div>
