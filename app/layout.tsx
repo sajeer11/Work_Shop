@@ -57,9 +57,9 @@ const plusJakartaSans = local({
   style: "normal",
 },
 {
-  path: "../public/font/Plus_Jakarta_Sans/PlusJakartaSans-Italic.ttf",
+  path: "../public/font/Plus_Jakarta_Sans/PlusJakartaSans-BoldItalic.ttf",
   weight: "700",
-  style: "italic",
+  style: "bold",
 }
   ],
   variable: "--font-plus",

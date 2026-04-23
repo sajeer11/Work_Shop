@@ -183,8 +183,6 @@ export interface AuthPageContent {
   questionnaire: {
     title: string;
     description: string;
-    reasonLabel: string;
-    reasonPlaceholder: string;
     quickUnderstandingLabel: string;
     quickUnderstandingOtherPlaceholder: string;
     quickUnderstandingOptions: Array<{

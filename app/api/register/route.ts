@@ -7,7 +7,6 @@ type RegisterPayload = {
   contactNumber?: string;
   age?: string;
   currentStatus?: string;
-  reason?: string;
   quickUnderstanding?: string;
   quickUnderstandingOther?: string;
   exploredField?: "yes" | "no" | "";
@@ -54,19 +53,18 @@ export async function POST(request: Request) {
     const contactNumber = body.contactNumber?.trim() ?? "";
     const age = body.age?.trim() ?? "";
     const currentStatus = body.currentStatus?.trim() ?? "";
-    const reason = body.reason?.trim() ?? "";
     const quickUnderstanding = body.quickUnderstanding?.trim() ?? "";
     const quickUnderstandingOther = body.quickUnderstandingOther?.trim() ?? "";
     const exploredField = body.exploredField ?? "";
     const previousExperience = body.previousExperience?.trim() ?? "";
     const seatPrice = body.seatPrice?.trim() ?? "";
 
-    if (!fullName || !email || !contactNumber || !age || !currentStatus || !reason || !quickUnderstanding || !exploredField) {
+    if (!fullName || !email || !contactNumber || !age || !currentStatus || !quickUnderstanding || !exploredField) {
       return NextResponse.json({ message: "Missing required form fields." }, { status: 400 });
     }
 
     if (quickUnderstanding === "Other" && !quickUnderstandingOther) {
-      return NextResponse.json({ message: "Please specify your reason." }, { status: 400 });
+      return NextResponse.json({ message: "Please specify your selection." }, { status: 400 });
     }
 
     if (!isValidEmail(email)) {
@@ -120,7 +118,6 @@ export async function POST(request: Request) {
         `Current Status: ${currentStatus}`,
         `Seat Price: ${seatPrice || "N/A"}`,
         "",
-        `Why do you want to attend?: ${reason}`,
         `Quick Understanding: ${quickUnderstandingLabel}`,
         `Explored this field before?: ${exploredLabel}`,
         `Previous experience: ${previousExperience || "Not provided"}`,
@@ -138,7 +135,6 @@ export async function POST(request: Request) {
             <tr><td><strong>Current Status</strong></td><td>${currentStatus}</td></tr>
             <tr><td><strong>Seat Price</strong></td><td>${seatPrice || "N/A"}</td></tr>
             <tr><td><strong>Explored this field before?</strong></td><td>${exploredLabel}</td></tr>
-            <tr><td valign="top"><strong>Why do you want to attend?</strong></td><td>${reason}</td></tr>
             <tr><td valign="top"><strong>Quick Understanding</strong></td><td>${quickUnderstandingLabel}</td></tr>
             <tr><td valign="top"><strong>Previous experience</strong></td><td>${previousExperience || "Not provided"}</td></tr>
           </table>

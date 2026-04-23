@@ -60,8 +60,6 @@
     "questionnaire": {
       "title": "Quick Understanding",
       "description": "Answer a few quick questions so we can understand your goals before confirming your seat.",
-      "reasonLabel": "Why do you want to attend this workshop?",
-      "reasonPlaceholder": "Type here",
       "quickUnderstandingLabel": "Quick Understanding (Select one)",
       "quickUnderstandingOtherPlaceholder": "Other (please specify)",
       "quickUnderstandingOptions": [

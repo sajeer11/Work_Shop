@@ -23,11 +23,11 @@ export default function DarkWorkshopAgenda({
   items,
 }: DarkWorkshopAgendaProps) {
   const pillClassName =
-    "inline-flex font-prompt font-normal rounded-full border border-white/12 bg-[linear-gradient(180deg,rgba(48,48,48,0.96),rgba(28,28,28,0.96))] px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-[#9BEA34] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-xl";
+    "inline-flex rounded-full font-prompt text-[15px] border border-white/12 bg-[linear-gradient(180deg,rgba(48,48,48,0.96),rgba(28,28,28,0.96))] px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-[#9BEA34] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-xl";
 
   return (
     <section className="relative w-full px-6 py-12 sm:px-8 lg:px-12">
-      <div className="pointer-events-none absolute -bottom-28 -left-28 h-[560px] w-[560px] bg-[radial-gradient(circle_at_28%_70%,rgba(155,234,52,0.2)_0%,rgba(155,234,52,0.09)_34%,transparent_68%)]" />
+      <div className="pointer-events-none absolute -bottom-28 -left-28 h-[400px] w-[400px] opacity-90 bg-[radial-gradient(circle_at_28%_70%,rgba(155,234,52,0.2)_0%,rgba(155,234,52,0.09)_34%,transparent_68%)]" />
       <div className="relative z-10 flex flex-col gap-10 md:flex-row md:items-start">
         <div className="w-full md:sticky md:top-24 md:w-[34%]">
           <span className={pillClassName}>
