@@ -122,7 +122,13 @@ export default function DarkCTAFooter({
                 <a href="#" aria-label="Facebook" className={socialLinkClassName}>
                   f
                 </a>
-                <a href="#" aria-label="Instagram" className={socialLinkClassName}>
+                <a
+                  href="https://www.instagram.com/dabrandrepublic?igsh=MTdyNGZvN3FzM3hsNg=="
+                  aria-label="Instagram"
+                  className={socialLinkClassName}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <svg
                     aria-hidden="true"
                     className="h-4 w-4"
@@ -134,7 +140,13 @@ export default function DarkCTAFooter({
                     <circle cx="11.2" cy="4.8" r="0.8" fill="currentColor" />
                   </svg>
                 </a>
-                <a href="#" aria-label="LinkedIn" className={socialLinkClassName}>
+                <a
+                  href="https://www.linkedin.com/company/brand-republic-pak/"
+                  aria-label="LinkedIn"
+                  className={socialLinkClassName}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   in
                 </a>
               </div>

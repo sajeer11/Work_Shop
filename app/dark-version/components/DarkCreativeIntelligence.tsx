@@ -28,7 +28,7 @@ export default function DarkCreativeIntelligence({
 }: DarkCreativeIntelligenceProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const pillClassName =
-    "inline-flex rounded-full font-prompt text-[15px] border border-white/12 bg-[linear-gradient(180deg,rgba(48,48,48,0.96),rgba(28,28,28,0.96))] px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-[#9BEA34] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-xl";
+    "";
 
   useEffect(() => {
     const node = scrollRef.current;
@@ -43,7 +43,7 @@ export default function DarkCreativeIntelligence({
   return (
     <section className="w-full px-6 py-12 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-4xl text-center">
-        <span className={pillClassName}>
+        <span className={"inline-flex rounded-full font-prompt text-[15px] border border-white/12 bg-[linear-gradient(180deg,rgba(48,48,48,0.96),rgba(28,28,28,0.96))] px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-[#9BEA34] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_30px_rgba(0,0,0,0.22)] "}>
           {badge}
         </span>
         <h2 className="mt-5 text-center font-plus text-[54px] font-medium leading-[1.2] tracking-normal text-white">

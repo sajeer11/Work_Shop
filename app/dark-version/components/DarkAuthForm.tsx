@@ -18,7 +18,6 @@ type BasicFormState = {
 };
 
 type QuestionnaireState = {
-  reason: string;
   quickUnderstanding: string;
   quickUnderstandingOther: string;
   exploredField: "" | "yes" | "no";
@@ -56,7 +55,6 @@ const initialTouchedState: TouchedState = {
   contactNumber: false,
   age: false,
   currentStatus: false,
-  reason: false,
   quickUnderstanding: false,
   quickUnderstandingOther: false,
   exploredField: false,
@@ -98,13 +96,11 @@ function getFieldError(field: keyof FormState, values: FormState) {
       return isValidAge(values.age) ? "" : "Enter a valid age.";
     case "currentStatus":
       return values.currentStatus.trim() ? "" : "Please select your current status.";
-    case "reason":
-      return values.reason.trim() ? "" : "Tell us why you want to attend.";
     case "quickUnderstanding":
       return values.quickUnderstanding.trim() ? "" : "Please select one option.";
     case "quickUnderstandingOther":
       return values.quickUnderstanding === "Other" && !values.quickUnderstandingOther.trim()
-        ? "Please specify your reason."
+        ? "Please specify your selection."
         : "";
     case "exploredField":
       return values.exploredField ? "" : "Please choose Yes or No.";
@@ -122,7 +118,7 @@ function getStepFields(step: StepKey): Array<keyof FormState> {
     case "basic":
       return ["fullName", "email", "contactNumber", "age", "currentStatus"];
     case "questionnaire":
-      return ["exploredField", "previousExperience", "reason", "quickUnderstanding", "quickUnderstandingOther"];
+      return ["exploredField", "previousExperience", "quickUnderstanding", "quickUnderstandingOther"];
     case "payment":
       return [];
     default:
@@ -177,7 +173,6 @@ export default function DarkAuthForm({
     contactNumber: "",
     age: "",
     currentStatus: "",
-    reason: "",
     quickUnderstanding: "",
     quickUnderstandingOther: "",
     exploredField: "",
@@ -211,7 +206,6 @@ export default function DarkAuthForm({
           contactNumber: parsedState.contactNumber,
           age: parsedState.age ?? "",
           currentStatus: parsedState.currentStatus,
-          reason: parsedState.reason,
           quickUnderstanding: parsedState.quickUnderstanding ?? "",
           quickUnderstandingOther: parsedState.quickUnderstandingOther ?? "",
           exploredField: parsedState.exploredField,
@@ -251,7 +245,6 @@ export default function DarkAuthForm({
       contactNumber: values.contactNumber,
       age: values.age,
       currentStatus: values.currentStatus,
-      reason: values.reason,
       quickUnderstanding: values.quickUnderstanding,
       quickUnderstandingOther: values.quickUnderstandingOther,
       exploredField: values.exploredField,
@@ -359,7 +352,6 @@ export default function DarkAuthForm({
             contactNumber: values.contactNumber,
             age: values.age,
             currentStatus: values.currentStatus,
-            reason: values.reason,
             quickUnderstanding: values.quickUnderstanding,
             quickUnderstandingOther: values.quickUnderstandingOther,
             exploredField: values.exploredField,
@@ -560,24 +552,6 @@ export default function DarkAuthForm({
 
             {currentStep === "questionnaire" ? (
               <div className="mx-auto mt-14 grid w-full max-w-[760px] gap-4">
-                <div className="rounded-[14px] border border-white/5 bg-[#232323] p-4">
-                  <label className="block">
-                    <span className="mb-3 block text-sm text-[#FFFFFF] font-medium ">
-                      {questionnaire.reasonLabel}
-                    </span>
-                    <textarea
-                      name="reason"
-                      placeholder={questionnaire.reasonPlaceholder}
-                      value={values.reason}
-                      onChange={handleTextFieldChange("reason")}
-                      onBlur={() => setTouched((current) => ({ ...current, reason: true }))}
-                      rows={5}
-                      className="w-full resize-none rounded-[12px] font-sans text-sm border border-white/6 bg-[#2b2b2b] px-4 py-3.5 text-white outline-none transition placeholder:text-white/24 focus:border-[#99ED43]/55"
-                    />
-                  </label>
-                  {renderError("reason")}
-                </div>
-
                 <div className="rounded-[14px] border border-white/5 bg-[#232323] p-4 font-medium text-[15px]">
                   <span className="mb-4 block text-sm text-[#FFFFFF] font-sans">
                     {questionnaire.exploredLabel}

@@ -31,7 +31,7 @@ export default function DarkWalkAwayWith({
     <section className="relative w-full overflow-hidden px-6 py-10 sm:px-8 lg:px-12">
       <div className="pointer-events-none absolute inset-x-[38%] bottom-0 h-56 bg-[radial-gradient(circle,rgba(104,90,205,0.16),transparent_72%)]" />
       <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-[0.95fr_1.2fr]">
-        <div className="rounded-[22px] border border-white/7 bg-[#1c1c1c]">
+        <div className="rounded-[22px]   ">
           <div className="border-b border-white/7 px-5 py-4">
             <span className={pillClassName}>
               {badge}
