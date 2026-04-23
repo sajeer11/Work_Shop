@@ -7,7 +7,11 @@ interface ResultItem {
 
 interface DarkWalkAwayWithProps {
   badge: string;
-  title: React.ReactNode;
+  title: {
+    prefix: string;
+    accentLineOne: string;
+    accentLineTwo: string;
+  };
   results: ResultItem[];
   imageUrl: string;
   imageAlt: string;
@@ -21,10 +25,10 @@ export default function DarkWalkAwayWith({
   imageAlt,
 }: DarkWalkAwayWithProps) {
   const pillClassName =
-    "inline-flex rounded-full border border-white/12 bg-[linear-gradient(180deg,rgba(48,48,48,0.96),rgba(28,28,28,0.96))] px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-[#9BEA34] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-xl";
+    "inline-flex rounded-full font-prompt font-normal text-[15px] border border-white/12 bg-[linear-gradient(180deg,rgba(48,48,48,0.96),rgba(28,28,28,0.96))] px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-[#9BEA34] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-xl";
 
   return (
-    <section className="relative w-full overflow-hidden rounded-[32px] bg-[#1a1a1a] px-6 py-10 sm:px-8 lg:px-12">
+    <section className="relative w-full overflow-hidden px-6 py-10 sm:px-8 lg:px-12">
       <div className="pointer-events-none absolute inset-x-[38%] bottom-0 h-56 bg-[radial-gradient(circle,rgba(104,90,205,0.16),transparent_72%)]" />
       <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-[0.95fr_1.2fr]">
         <div className="rounded-[22px] border border-white/7 bg-[#1c1c1c]">
@@ -32,15 +36,18 @@ export default function DarkWalkAwayWith({
             <span className={pillClassName}>
               {badge}
             </span>
-            <h2 className="mt-4 text-[clamp(2.1rem,4vw,3.4rem)] font-prompt leading-tight tracking-tight text-white">
-              {title}
+            <h2 className="mt-4 font-plus text-[54px] font-medium leading-[1.2] tracking-normal text-[#DDDDDD]">
+              {title.prefix}{" "}
+              <span className="font-bold italic text-[#9BEA34]">{title.accentLineOne}</span>
+              <br />
+              <span className="font-bold italic text-[#9BEA34]">{title.accentLineTwo}</span>
             </h2>
           </div>
           <ul className="space-y-2 p-3">
             {results.map((item) => (
               <li
                 key={item.text}
-                className="flex items-center gap-3 rounded-xl border border-white/7 bg-white/[0.02] px-4 py-3 text-sm text-white/72"
+                className="flex items-center font-prompt font-normal text-[15px]  gap-3 rounded-xl border border-white/7 bg-white/[0.02] px-4 py-3 text-sm text-white/72"
               >
                 <span className="flex h-4 w-4 items-center justify-center rounded-full border border-[#FEB803]/45 text-[6px] text-[#FEB803]">
                   ✔

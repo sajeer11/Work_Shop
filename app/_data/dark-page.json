@@ -1,12 +1,12 @@
 {
   "hero": {
     "logoSrc": "/Vector.svg",
-    "badge": "WORKSHOP - LIVE & AI POWERED",
+    "badge": "WORKSHOP - AI POWERED",
     "headline": {
       "top": "Creative",
-      "bottom": "Intelligence Lab"
+      "bottom": "Intelligence Workshop"
     },
-    "description": "How modern creators build smarter content: a fully AI-driven hands-on workshop by Brand Republic.",
+    "description": "How modern creators build smarter content a fully AI-driven hands-on workshop by Brand Republic.",
     "ctaPrimary": {
       "label": "Register Now",
       "href": "/register"
@@ -131,7 +131,7 @@
       "text": " Behind the Process"
       
     },
-    "subtitle": "No prior experience needed everything is taught from scratch.",
+    "subtitle": "How modern creators think, generate, and scale content",
     "tools": [
       {
         "iconSrc": "/cloud.svg",
