@@ -472,7 +472,7 @@ export default function DarkAuthForm({
             ) : (
               <div className="flex flex-1 flex-col items-center justify-center py-20 text-center">
                 <div className="relative  items-center justify-center  ">
-                  <div className="absolute inset-[10px] rounded-full border border-dashed " />
+                  {/* <div className="absolute inset-[10px] rounded-full border border-dashed " /> */}
                   <div className="relative h-40 w-40">
                     <Image
                       src="/check 1.svg"
