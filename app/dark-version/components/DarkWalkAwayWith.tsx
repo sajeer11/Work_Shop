@@ -15,6 +15,7 @@ interface DarkWalkAwayWithProps {
   results: ResultItem[];
   imageUrl: string;
   imageAlt: string;
+
 }
 
 export default function DarkWalkAwayWith({
