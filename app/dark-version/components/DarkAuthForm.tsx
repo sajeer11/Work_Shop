@@ -6,7 +6,19 @@ import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import darkPageJson from "../../_data/dark-page.json";
 import { trackEvent } from "../../lib/analytics";
-import type { AuthPageContent, DarkPageContent } from "../../_data/page-content.types";
+import type {
+  AuthPageContent,
+  DarkPageContent,
+} from "../../_data/page-content.types";
+
+const EVENT_KEYS = {
+  ON_REGISTER_PAGE_OPEN: "ON_REGISTER_PAGE_OPEN",
+  ON_BASIC_INFO_NEXT: "ON_BASIC_INFO_NEXT",
+  ON_QUESTIONAIRE_SHOW: "ON_QUESTIONAIRE_SHOW",
+  ON_QUESTIONAIRE_NEXT: "ON_QUESTIONAIRE_NEXT",
+  ON_PAYMENT_SHOW: "ON_PAYMENT_SHOW",
+  ON_CONFIRM_MY_SEAT: "ON_CONFIRM_MY_SEAT",
+};
 
 type StepKey = "basic" | "questionnaire" | "payment" | "complete";
 
@@ -103,11 +115,16 @@ function getFieldError(field: keyof FormState, values: FormState) {
       if (!values.age.trim()) return "Age is required.";
       return isValidAge(values.age) ? "" : "Enter a valid age.";
     case "currentStatus":
-      return values.currentStatus.trim() ? "" : "Please select your current status.";
+      return values.currentStatus.trim()
+        ? ""
+        : "Please select your current status.";
     case "quickUnderstanding":
-      return values.quickUnderstanding.trim() ? "" : "Please select one option.";
+      return values.quickUnderstanding.trim()
+        ? ""
+        : "Please select one option.";
     case "quickUnderstandingOther":
-      return values.quickUnderstanding === "Other" && !values.quickUnderstandingOther.trim()
+      return values.quickUnderstanding === "Other" &&
+        !values.quickUnderstandingOther.trim()
         ? "Please specify your selection."
         : "";
     case "exploredField":
@@ -115,7 +132,9 @@ function getFieldError(field: keyof FormState, values: FormState) {
     case "paymentMethod":
       return values.paymentMethod ? "" : "Please select a payment method.";
     case "paymentProofFile":
-      return values.paymentProofFile ? "" : "Upload your payment proof to continue.";
+      return values.paymentProofFile
+        ? ""
+        : "Upload your payment proof to continue.";
     default:
       return "";
   }
@@ -126,7 +145,12 @@ function getStepFields(step: StepKey): Array<keyof FormState> {
     case "basic":
       return ["fullName", "email", "contactNumber", "age", "currentStatus"];
     case "questionnaire":
-      return ["exploredField", "previousExperience", "quickUnderstanding", "quickUnderstandingOther"];
+      return [
+        "exploredField",
+        "previousExperience",
+        "quickUnderstanding",
+        "quickUnderstandingOther",
+      ];
     case "payment":
       return [];
     default:
@@ -138,7 +162,10 @@ function isStepValid(step: StepKey, values: FormState) {
   return getStepFields(step).every((field) => !getFieldError(field, values));
 }
 
-function progressStepStatus(currentStep: StepKey, step: (typeof progressSteps)[number]["key"]) {
+function progressStepStatus(
+  currentStep: StepKey,
+  step: (typeof progressSteps)[number]["key"],
+) {
   const currentIndex = getStepIndex(currentStep);
   const stepIndex = getStepIndex(step);
 
@@ -175,7 +202,8 @@ export default function DarkAuthForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [touched, setTouched] = useState<TouchedState>(initialTouchedState);
-  const [startedSteps, setStartedSteps] = useState<Record<StepKey, boolean>>(initialStartedSteps);
+  const [startedSteps, setStartedSteps] =
+    useState<Record<StepKey, boolean>>(initialStartedSteps);
   const trackedStartedStepsRef = useRef<Set<StepKey>>(new Set());
   const [values, setValues] = useState<FormState>(() => ({
     fullName: "",
@@ -193,8 +221,14 @@ export default function DarkAuthForm({
   }));
 
   useEffect(() => {
+    trackEvent(EVENT_KEYS.ON_REGISTER_PAGE_OPEN, {
+      event_category: "register_funnel",
+      step_name: currentStep,
+    });
+
     const timeoutId = window.setTimeout(() => {
-      const emailFromSearch = new URLSearchParams(window.location.search).get("email") ?? "";
+      const emailFromSearch =
+        new URLSearchParams(window.location.search).get("email") ?? "";
       const savedState = window.localStorage.getItem(registerStorageKey);
 
       if (!savedState) {
@@ -263,7 +297,10 @@ export default function DarkAuthForm({
       paymentProofName: values.paymentProofName,
     };
 
-    window.localStorage.setItem(registerStorageKey, JSON.stringify(stateToPersist));
+    window.localStorage.setItem(
+      registerStorageKey,
+      JSON.stringify(stateToPersist),
+    );
   }, [currentStep, hasRestoredState, values]);
 
   useEffect(() => {
@@ -282,11 +319,32 @@ export default function DarkAuthForm({
     if (!hasRestoredState) {
       return;
     }
+    console.log(currentStep);
 
-    trackEvent("register_step_view", {
-      event_category: "register_funnel",
-      step_name: currentStep,
-    });
+    if (currentStep == "questionnaire") {
+      trackEvent(EVENT_KEYS.ON_BASIC_INFO_NEXT, {
+        event_category: "register_funnel",
+        step_name: currentStep,
+      });
+      trackEvent(EVENT_KEYS.ON_QUESTIONAIRE_SHOW, {
+        event_category: "register_funnel",
+        step_name: currentStep,
+      });
+    } else if (currentStep == "payment") {
+      trackEvent(EVENT_KEYS.ON_QUESTIONAIRE_NEXT, {
+        event_category: "register_funnel",
+        step_name: currentStep,
+      });
+      trackEvent(EVENT_KEYS.ON_PAYMENT_SHOW, {
+        event_category: "register_funnel",
+        step_name: currentStep,
+      });
+    } 
+
+    // trackEvent("register_step_view", {
+    //   event_category: "register_funnel",
+    //   step_name: currentStep,
+    // });
   }, [currentStep, hasRestoredState]);
 
   useEffect(() => {
@@ -294,12 +352,10 @@ export default function DarkAuthForm({
       if (!startedSteps[step] || trackedStartedStepsRef.current.has(step)) {
         return;
       }
+      console.log(step);
 
       trackedStartedStepsRef.current.add(step);
-      trackEvent("register_step_start", {
-        event_category: "register_funnel",
-        step_name: step,
-      });
+
     });
   }, [startedSteps]);
 
@@ -336,7 +392,12 @@ export default function DarkAuthForm({
   };
 
   const handleTextFieldChange =
-    (field: keyof FormState) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    (field: keyof FormState) =>
+    (
+      event: ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) => {
       markStepStarted(currentStep);
 
       const nextValue =
@@ -344,7 +405,7 @@ export default function DarkAuthForm({
           ? event.target.value.replace(/\D/g, "").slice(0, 11)
           : field === "age"
             ? event.target.value.replace(/\D/g, "").slice(0, 3)
-          : event.target.value;
+            : event.target.value;
 
       updateField(field, nextValue);
     };
@@ -363,19 +424,11 @@ export default function DarkAuthForm({
     }
 
     if (currentStep === "basic") {
-      trackEvent("register_step_complete", {
-        event_category: "register_funnel",
-        step_name: "basic",
-      });
       setCurrentStep("questionnaire");
       return;
     }
 
     if (currentStep === "questionnaire") {
-      trackEvent("register_step_complete", {
-        event_category: "register_funnel",
-        step_name: "questionnaire",
-      });
       setCurrentStep("payment");
     }
   };
@@ -397,10 +450,6 @@ export default function DarkAuthForm({
     void (async () => {
       setIsSubmitting(true);
       setSubmitError("");
-      trackEvent("register_submission_start", {
-        event_category: "register_funnel",
-        step_name: "payment",
-      });
 
       try {
         const response = await fetch("/api/register", {
@@ -423,28 +472,32 @@ export default function DarkAuthForm({
         });
 
         if (!response.ok) {
-          const data = (await response.json().catch(() => null)) as { message?: string } | null;
-          throw new Error(data?.message || "Unable to send your registration right now.");
+          const data = (await response.json().catch(() => null)) as {
+            message?: string;
+          } | null;
+          throw new Error(
+            data?.message || "Unable to send your registration right now.",
+          );
         }
 
         window.localStorage.removeItem(registerStorageKey);
-        trackEvent("register_step_complete", {
+        trackEvent(EVENT_KEYS.ON_CONFIRM_MY_SEAT, {
           event_category: "register_funnel",
-          step_name: "payment",
+          step_name: currentStep,
         });
-        trackEvent("register_submission_success", {
-          event_category: "register_funnel",
-          step_name: "complete",
-        });
+
         setCurrentStep("complete");
       } catch (error) {
         trackEvent("register_submission_error", {
           event_category: "register_funnel",
           step_name: "payment",
-          error_message: error instanceof Error ? error.message : "unknown_error",
+          error_message:
+            error instanceof Error ? error.message : "unknown_error",
         });
         setSubmitError(
-          error instanceof Error ? error.message : "Unable to send your registration right now.",
+          error instanceof Error
+            ? error.message
+            : "Unable to send your registration right now.",
         );
       } finally {
         setIsSubmitting(false);
@@ -529,8 +582,6 @@ export default function DarkAuthForm({
                 </div>
 
                 <div className="mt-14 text-center">
-                 
-
                   <h1 className="mt-6 lg:text-6xl md:text-5xl text-5xl  leading-[0.96] tracking-[-0.04em] text-[#FFFFFF]  font-medium text-[54px] ">
                     {currentStep === "basic" && title}
                     {currentStep === "questionnaire" && questionnaire.title}
@@ -539,7 +590,8 @@ export default function DarkAuthForm({
 
                   <p className="mx-auto mt-4 max-w-[560px] text-sm leading-relaxed text-[#DDDDDD] font-prompt font-normal text-[15px]">
                     {currentStep === "basic" && description}
-                    {currentStep === "questionnaire" && questionnaire.description}
+                    {currentStep === "questionnaire" &&
+                      questionnaire.description}
                     {currentStep === "payment" && payment.description}
                   </p>
                 </div>
@@ -565,7 +617,10 @@ export default function DarkAuthForm({
 
                 <p className="mx-auto mt-4 max-w-[520px] text-[15px] leading-relaxed text-[#DDDDDD] font-prompt font-normal">
                   {complete.description}{" "}
-                  <span className="text-white/80">{values.email || "your email address"}</span>.
+                  <span className="text-white/80">
+                    {values.email || "your email address"}
+                  </span>
+                  .
                 </p>
               </div>
             )}
@@ -577,24 +632,40 @@ export default function DarkAuthForm({
                     key={field.name}
                     className="grid items-start gap-3 md:grid-cols-[170px_minmax(0,1fr)] md:gap-12 font-medium font-sans text-[#FFFFFF] text-[15px]"
                   >
-                    <span className="pt-3 text-sm text-white  font-sans">{field.label}</span>
+                    <span className="pt-3 text-sm text-white  font-sans">
+                      {field.label}
+                    </span>
                     <div>
                       {field.type === "select" ? (
                         <div className="relative">
                           <select
                             name={field.name}
-                            value={String(values[field.name as keyof FormState] ?? "")}
-                            onChange={handleTextFieldChange(field.name as keyof FormState)}
+                            value={String(
+                              values[field.name as keyof FormState] ?? "",
+                            )}
+                            onChange={handleTextFieldChange(
+                              field.name as keyof FormState,
+                            )}
                             onBlur={() =>
-                              setTouched((current) => ({ ...current, [field.name]: true }))
+                              setTouched((current) => ({
+                                ...current,
+                                [field.name]: true,
+                              }))
                             }
                             className="register-select w-full appearance-none rounded-[10px] border border-white/6 bg-[#252525] px-4 py-3.5 pr-12 text-sm text-white outline-none transition focus:border-[#99ED43]/55"
                           >
-                            <option value="" className="bg-[#252525] text-white/40">
+                            <option
+                              value=""
+                              className="bg-[#252525] text-white/40"
+                            >
                               {field.placeholder}
                             </option>
                             {field.options?.map((option) => (
-                              <option key={option.value} value={option.value} className="bg-[#252525]">
+                              <option
+                                key={option.value}
+                                value={option.value}
+                                className="bg-[#252525]"
+                              >
                                 {option.label}
                               </option>
                             ))}
@@ -608,14 +679,28 @@ export default function DarkAuthForm({
                           name={field.name}
                           type={field.type}
                           placeholder={field.placeholder}
-                          value={String(values[field.name as keyof FormState] ?? "")}
-                          onChange={handleTextFieldChange(field.name as keyof FormState)}
+                          value={String(
+                            values[field.name as keyof FormState] ?? "",
+                          )}
+                          onChange={handleTextFieldChange(
+                            field.name as keyof FormState,
+                          )}
                           onBlur={() =>
-                            setTouched((current) => ({ ...current, [field.name]: true }))
+                            setTouched((current) => ({
+                              ...current,
+                              [field.name]: true,
+                            }))
                           }
-                          inputMode={field.name === "contactNumber" || field.name === "age" ? "numeric" : undefined}
-                          maxLength={field.name === "contactNumber" ? 11 : undefined}
-                           className="w-full rounded-[10px] border border-white/6 bg-[#252525] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-white/24 focus:border-[#99ED43]/55"
+                          inputMode={
+                            field.name === "contactNumber" ||
+                            field.name === "age"
+                              ? "numeric"
+                              : undefined
+                          }
+                          maxLength={
+                            field.name === "contactNumber" ? 11 : undefined
+                          }
+                          className="w-full rounded-[10px] border border-white/6 bg-[#252525] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-white/24 focus:border-[#99ED43]/55"
                         />
                       )}
                       {renderError(field.name as keyof FormState)}
@@ -643,7 +728,10 @@ export default function DarkAuthForm({
                           onClick={() => {
                             markStepStarted("questionnaire");
                             updateField("exploredField", option.value);
-                            setTouched((current) => ({ ...current, exploredField: true }));
+                            setTouched((current) => ({
+                              ...current,
+                              exploredField: true,
+                            }));
                           }}
                           className={[
                             "flex items-center gap-3 rounded-[10px] border px-4 py-3 text-left  font-prompt text-[15px] transition",
@@ -656,7 +744,9 @@ export default function DarkAuthForm({
                           <span
                             className={[
                               "h-3.5 w-3.5 rounded-full border",
-                              isSelected ? "border-[#99ED43] bg-[#99ED43]" : "border-white/24 bg-transparent",
+                              isSelected
+                                ? "border-[#99ED43] bg-[#99ED43]"
+                                : "border-white/24 bg-transparent",
                             ].join(" ")}
                           />
                           {option.label}
@@ -671,11 +761,17 @@ export default function DarkAuthForm({
                   <label className="block">
                     <span className="mb-3 block text-sm text-[#FFFFFF] font-medium text-[15px]">
                       {questionnaire.experienceLabel}{" "}
-                      <span className=" font-medium text-[#FFFFFF]">{questionnaire.experienceOptionalLabel}</span>
+                      <span className=" font-medium text-[#FFFFFF]">
+                        {questionnaire.experienceOptionalLabel}
+                      </span>
                     </span>
                     <textarea
                       name="previousExperience"
-                      placeholder={isQuestionnaireYes ? questionnaire.experiencePlaceholder : questionnaire.experienceOptionalLabel}
+                      placeholder={
+                        isQuestionnaireYes
+                          ? questionnaire.experiencePlaceholder
+                          : questionnaire.experienceOptionalLabel
+                      }
                       value={values.previousExperience}
                       onChange={handleTextFieldChange("previousExperience")}
                       rows={4}
@@ -691,7 +787,8 @@ export default function DarkAuthForm({
 
                   <div className="grid gap-3 font-prompt">
                     {questionnaire.quickUnderstandingOptions.map((option) => {
-                      const isSelected = values.quickUnderstanding === option.value;
+                      const isSelected =
+                        values.quickUnderstanding === option.value;
 
                       return (
                         <button
@@ -703,7 +800,10 @@ export default function DarkAuthForm({
                             if (option.value !== "Other") {
                               updateField("quickUnderstandingOther", "");
                             }
-                            setTouched((current) => ({ ...current, quickUnderstanding: true }));
+                            setTouched((current) => ({
+                              ...current,
+                              quickUnderstanding: true,
+                            }));
                           }}
                           className={[
                             "flex items-center gap-3 rounded-[10px] border px-4 py-3 text-left text-[15px] transition",
@@ -716,7 +816,9 @@ export default function DarkAuthForm({
                           <span
                             className={[
                               "h-3 w-3 rounded-full border",
-                              isSelected ? "border-[#99ED43] bg-[#99ED43]" : "border-white/24 bg-transparent",
+                              isSelected
+                                ? "border-[#99ED43] bg-[#99ED43]"
+                                : "border-white/24 bg-transparent",
                             ].join(" ")}
                           />
                           {option.label}
@@ -729,10 +831,19 @@ export default function DarkAuthForm({
                     <input
                       name="quickUnderstandingOther"
                       type="text"
-                      placeholder={questionnaire.quickUnderstandingOtherPlaceholder}
+                      placeholder={
+                        questionnaire.quickUnderstandingOtherPlaceholder
+                      }
                       value={values.quickUnderstandingOther}
-                      onChange={handleTextFieldChange("quickUnderstandingOther")}
-                      onBlur={() => setTouched((current) => ({ ...current, quickUnderstandingOther: true }))}
+                      onChange={handleTextFieldChange(
+                        "quickUnderstandingOther",
+                      )}
+                      onBlur={() =>
+                        setTouched((current) => ({
+                          ...current,
+                          quickUnderstandingOther: true,
+                        }))
+                      }
                       className="mt-3 w-full rounded-[10px] border border-white/6 bg-[#2b2b2b] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-white/24 focus:border-[#99ED43]/55"
                     />
                   ) : null}
@@ -744,11 +855,17 @@ export default function DarkAuthForm({
             ) : null}
 
             {currentStep === "payment" ? (
-              <form onSubmit={handleComplete} className="mx-auto mt-12 w-full max-w-[760px]">
+              <form
+                onSubmit={handleComplete}
+                className="mx-auto mt-12 w-full max-w-[760px]"
+              >
                 <div className="rounded-[14px] border border-white/5 bg-[#232323] p-4">
-                  
-                  <p className="font-medium text-[#FFFFFF] text-[15px] text-center">{payment.subheading}</p>
-                  <p className="text-sm text-white/82">{payment.seatPriceLabel}</p>
+                  <p className="font-medium text-[#FFFFFF] text-[15px] text-center">
+                    {payment.subheading}
+                  </p>
+                  <p className="text-sm text-white/82">
+                    {payment.seatPriceLabel}
+                  </p>
                   <div className="mt-2 flex items-start gap-2 text-[#99ED43]">
                     <span className="pt-2 text-[0.95rem] font-medium leading-none tracking-[0.02em]">
                       {payment.seatPriceCurrency}
@@ -759,8 +876,12 @@ export default function DarkAuthForm({
                   </div>
 
                   <div className="mt-5 text-sm leading-relaxed text-white/52">
-                    <p className="text-[#FFFFFF] font-medium text-[15px]">{payment.noteLabel}</p>
-                    <p className="text-[#DDDDDD] font-prompt  mt-2 whitespace-pre-line italic">{payment.noteText}</p>
+                    <p className="text-[#FFFFFF] font-medium text-[15px]">
+                      {payment.noteLabel}
+                    </p>
+                    <p className="text-[#DDDDDD] font-prompt  mt-2 whitespace-pre-line italic">
+                      {payment.noteText}
+                    </p>
                   </div>
                 </div>
 
@@ -815,7 +936,9 @@ export default function DarkAuthForm({
                 disabled={!isStepValid(currentStep, values)}
                 className="inline-flex items-center justify-center rounded-full bg-[#99ED43] px-8 py-3 text-sm font-medium text-[#1A1A1A] shadow-[0_10px_30px_rgba(153,237,67,0.18)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {currentStep === "basic" ? submitLabel : questionnaire.nextLabel}
+                {currentStep === "basic"
+                  ? submitLabel
+                  : questionnaire.nextLabel}
               </button>
             </div>
           ) : null}
