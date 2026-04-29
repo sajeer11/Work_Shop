@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import local from "next/font/local";
 import Script from "next/script";
@@ -103,7 +104,9 @@ export default function RootLayout({
           </>
         ) : null}
         <AOSProvider />
-        <GoogleAnalytics />
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
+        </Suspense>
 
         {children}
       </body>
