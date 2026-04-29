@@ -10,15 +10,9 @@ import type {
   AuthPageContent,
   DarkPageContent,
 } from "../../_data/page-content.types";
+import { EVENT_KEYS } from "@/app/lib/events";
 
-const EVENT_KEYS = {
-  ON_REGISTER_PAGE_OPEN: "ON_REGISTER_PAGE_OPEN",
-  ON_BASIC_INFO_NEXT: "ON_BASIC_INFO_NEXT",
-  ON_QUESTIONAIRE_SHOW: "ON_QUESTIONAIRE_SHOW",
-  ON_QUESTIONAIRE_NEXT: "ON_QUESTIONAIRE_NEXT",
-  ON_PAYMENT_SHOW: "ON_PAYMENT_SHOW",
-  ON_CONFIRM_MY_SEAT: "ON_CONFIRM_MY_SEAT",
-};
+
 
 type StepKey = "basic" | "questionnaire" | "payment" | "complete";
 
@@ -319,27 +313,6 @@ export default function DarkAuthForm({
     if (!hasRestoredState) {
       return;
     }
-    console.log(currentStep);
-
-    if (currentStep == "questionnaire") {
-      trackEvent(EVENT_KEYS.ON_BASIC_INFO_NEXT, {
-        event_category: "register_funnel",
-        step_name: currentStep,
-      });
-      trackEvent(EVENT_KEYS.ON_QUESTIONAIRE_SHOW, {
-        event_category: "register_funnel",
-        step_name: currentStep,
-      });
-    } else if (currentStep == "payment") {
-      trackEvent(EVENT_KEYS.ON_QUESTIONAIRE_NEXT, {
-        event_category: "register_funnel",
-        step_name: currentStep,
-      });
-      trackEvent(EVENT_KEYS.ON_PAYMENT_SHOW, {
-        event_category: "register_funnel",
-        step_name: currentStep,
-      });
-    } 
 
     // trackEvent("register_step_view", {
     //   event_category: "register_funnel",
@@ -425,11 +398,28 @@ export default function DarkAuthForm({
 
     if (currentStep === "basic") {
       setCurrentStep("questionnaire");
+       trackEvent(EVENT_KEYS.ON_BASIC_INFO_NEXT, {
+        event_category: "register_funnel",
+        step_name: currentStep,
+      });
+      trackEvent(EVENT_KEYS.ON_QUESTIONAIRE_SHOW, {
+        event_category: "register_funnel",
+        step_name: currentStep,
+      });
       return;
     }
 
     if (currentStep === "questionnaire") {
+       trackEvent(EVENT_KEYS.ON_QUESTIONAIRE_NEXT, {
+        event_category: "register_funnel",
+        step_name: currentStep,
+      });
+      trackEvent(EVENT_KEYS.ON_PAYMENT_SHOW, {
+        event_category: "register_funnel",
+        step_name: currentStep,
+      });
       setCurrentStep("payment");
+
     }
   };
 

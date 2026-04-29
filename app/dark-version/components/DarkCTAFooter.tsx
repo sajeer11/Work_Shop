@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { trackEvent } from "../../lib/analytics";
+import { EVENT_KEYS } from "@/app/lib/events";
 
 interface DarkCTAFooterProps {
   logoSrc: string;
@@ -38,7 +39,7 @@ export default function DarkCTAFooter({
     const formData = new FormData(event.currentTarget);
     const email = String(formData.get("email") ?? "").trim();
 
-    trackEvent("reserve_seat_email_submit", {
+    trackEvent(EVENT_KEYS.ON_RESERVE_YOUR_SEAT_CLICK, {
       event_category: "engagement",
       email_provided: Boolean(email),
       destination: ctaHref,
