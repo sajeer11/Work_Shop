@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { trackEvent, trackPageView } from "../../lib/analytics";
+import { EVENT_KEYS } from "@/app/lib/events";
 
 function trackCtaClick(target: Element) {
   const link = target.closest("a");
@@ -20,7 +21,8 @@ function trackCtaClick(target: Element) {
     "CTA";
   const normalizedLabel = label.toLowerCase();
 
-  const isRegisterIntent = href === "/register" || href?.startsWith("/register?");
+  const isRegisterIntent =
+    href === "/register" || href?.startsWith("/register?");
   const isReserveIntent =
     formAction === "/register" ||
     normalizedLabel.includes("reserve your seat") ||
@@ -50,6 +52,10 @@ export default function GoogleAnalytics() {
   }, [pathname, searchParams]);
 
   useEffect(() => {
+    trackEvent(EVENT_KEYS.ON_LANDING_PAGE_VISIT, {
+      page_path: window.location.pathname,
+    });
+
     const scrollMilestones = new Set<number>();
     const pageStartTime = Date.now();
     let hasSentTimeSpent = false;
@@ -60,17 +66,16 @@ export default function GoogleAnalytics() {
       }
 
       hasSentTimeSpent = true;
-      const elapsedSeconds = Math.max(1, Math.round((Date.now() - pageStartTime) / 1000));
-
-      trackEvent("page_time_spent", {
-        page_path: window.location.pathname,
-        page_seconds: elapsedSeconds,
-      });
+      const elapsedSeconds = Math.max(
+        1,
+        Math.round((Date.now() - pageStartTime) / 1000),
+      );
     };
 
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const documentHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
 
       if (documentHeight <= 0) {
         return;
@@ -81,7 +86,7 @@ export default function GoogleAnalytics() {
       [25, 50, 75, 100].forEach((milestone) => {
         if (scrollPercent >= milestone && !scrollMilestones.has(milestone)) {
           scrollMilestones.add(milestone);
-          trackEvent("scroll_depth", {
+          trackEvent(EVENT_KEYS.ON_SCROLL, {
             page_path: window.location.pathname,
             scroll_percent: milestone,
           });
