@@ -9,7 +9,6 @@ import darkPageJson from "../_data/dark-page.json";
 import type { DarkPageContent } from "../_data/page-content.types";
 
 const darkPageData = darkPageJson as DarkPageContent;
-
 export default function DarkVersionPage() {
   const { hero, speaker, creativeIntelligence, workshopAgenda, aiToolStack, walkAwayWith, ctaFooter } =
     darkPageData;
