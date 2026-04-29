@@ -89,10 +89,6 @@ function isValidAge(value: string) {
   return /^\d{1,3}$/.test(value) && age >= 1 && age <= 120;
 }
 
-function getStepIndex(step: StepKey) {
-  return stepOrder.indexOf(step);
-}
-
 function getFieldError(field: keyof FormState, values: FormState) {
   switch (field) {
     case "fullName":
@@ -156,23 +152,36 @@ function isStepValid(step: StepKey, values: FormState) {
   return getStepFields(step).every((field) => !getFieldError(field, values));
 }
 
+function isStepComplete(
+  step: (typeof progressSteps)[number]["key"],
+  values: FormState,
+) {
+  if (step === "basic") {
+    return isStepValid("basic", values);
+  }
+
+  if (step === "questionnaire") {
+    return isStepValid("basic", values) && isStepValid("questionnaire", values);
+  }
+
+  return false;
+}
+
 function progressStepStatus(
   currentStep: StepKey,
   step: (typeof progressSteps)[number]["key"],
+  values: FormState,
 ) {
-  const currentIndex = getStepIndex(currentStep);
-  const stepIndex = getStepIndex(step);
-
   if (currentStep === "complete") {
     return "complete";
   }
 
-  if (stepIndex < currentIndex) {
-    return "complete";
+  if (step === currentStep) {
+    return "current";
   }
 
-  if (stepIndex === currentIndex) {
-    return "current";
+  if (isStepComplete(step, values)) {
+    return "complete";
   }
 
   return "upcoming";
@@ -213,11 +222,17 @@ export default function DarkAuthForm({
     paymentProofName: "",
     paymentProofFile: null,
   }));
+  const isQuestionnaireLocked = !isStepValid("basic", values);
+  const isPaymentLocked =
+    !isStepValid("basic", values) || !isStepValid("questionnaire", values);
+  const isCurrentStepLocked =
+    (currentStep === "questionnaire" && isQuestionnaireLocked) ||
+    (currentStep === "payment" && isPaymentLocked);
 
   useEffect(() => {
     trackEvent(EVENT_KEYS.ON_REGISTER_PAGE_OPEN, {
       event_category: "register_funnel",
-      step_name: currentStep,
+      step_name: "basic",
     });
 
     const timeoutId = window.setTimeout(() => {
@@ -236,9 +251,7 @@ export default function DarkAuthForm({
 
       try {
         const parsedState = JSON.parse(savedState) as PersistedFormState;
-
-        setCurrentStep(parsedState.currentStep);
-        setValues({
+        const restoredValues: FormState = {
           fullName: parsedState.fullName,
           email: parsedState.email || emailFromSearch,
           contactNumber: parsedState.contactNumber,
@@ -251,7 +264,10 @@ export default function DarkAuthForm({
           paymentMethod: parsedState.paymentMethod,
           paymentProofName: parsedState.paymentProofName,
           paymentProofFile: null,
-        });
+        };
+
+        setValues(restoredValues);
+        setCurrentStep(parsedState.currentStep);
       } catch {
         window.localStorage.removeItem(registerStorageKey);
         setValues((current) => ({
@@ -434,6 +450,12 @@ export default function DarkAuthForm({
     }
   };
 
+  const handleStepChange = (
+    nextStep: (typeof progressSteps)[number]["key"],
+  ) => {
+    setCurrentStep(nextStep);
+  };
+
   const handleComplete = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -542,21 +564,25 @@ export default function DarkAuthForm({
               <>
                 <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
                   {progressSteps.map((step, index) => {
-                    const status = progressStepStatus(currentStep, step.key);
+                    const status = progressStepStatus(currentStep, step.key, values);
                     const isActive = status !== "upcoming";
 
                     return (
                       <React.Fragment key={step.key}>
-                        <div
+                        <button
+                          type="button"
+                          onClick={() => handleStepChange(step.key)}
+                          aria-current={status === "current" ? "step" : undefined}
                           className={[
                             "inline-flex min-w-[128px] items-center justify-center rounded-full border px-4 py-2 text-[13.5px] font-medium tracking-[0.01em] transition sm:min-w-[152px] sm:text-xs",
                             status === "current" || status === "complete"
                               ? "border-[#99ED43] bg-[#22281d] text-[#daf8ad]"
                               : "border-white/14 bg-white/[0.03] text-white/38",
+                            "cursor-pointer hover:border-[#99ED43]/55",
                           ].join(" ")}
                         >
                           {step.label}
-                        </div>
+                        </button>
 
                         {index < progressSteps.length - 1 ? (
                           <div
@@ -702,6 +728,12 @@ export default function DarkAuthForm({
 
             {currentStep === "questionnaire" ? (
               <div className="mx-auto mt-14 grid w-full max-w-[760px] gap-4">
+                {isQuestionnaireLocked ? (
+                  <p className="rounded-[12px] border border-[#99ED43]/20 bg-[#263817] px-4 py-3 text-sm text-[#daf8ad]">
+                    Complete your basic information first to unlock this section.
+                  </p>
+                ) : null}
+
                 <div className="rounded-[14px] border border-white/5 bg-[#232323] p-4 font-medium text-[15px]">
                   <span className="mb-4 block text-sm text-[#FFFFFF] font-sans">
                     {questionnaire.exploredLabel}
@@ -715,6 +747,7 @@ export default function DarkAuthForm({
                         <button
                           key={option.value}
                           type="button"
+                          disabled={isQuestionnaireLocked}
                           onClick={() => {
                             markStepStarted("questionnaire");
                             updateField("exploredField", option.value);
@@ -728,6 +761,9 @@ export default function DarkAuthForm({
                             isSelected
                               ? "border-[#99ED43] bg-[#303729] text-[#FFFFFF]"
                               : "border-white/6 bg-[#2b2b2b] text-white/56 hover:border-white/16",
+                            isQuestionnaireLocked
+                              ? "cursor-not-allowed opacity-45"
+                              : "",
                           ].join(" ")}
                           aria-pressed={isSelected}
                         >
@@ -763,9 +799,10 @@ export default function DarkAuthForm({
                           : questionnaire.experienceOptionalLabel
                       }
                       value={values.previousExperience}
+                      disabled={isQuestionnaireLocked}
                       onChange={handleTextFieldChange("previousExperience")}
                       rows={4}
-                      className="w-full resize-none rounded-[12px] border border-white/6 bg-[#2b2b2b] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-white/24 focus:border-[#99ED43]/55"
+                      className="w-full resize-none rounded-[12px] border border-white/6 bg-[#2b2b2b] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-white/24 focus:border-[#99ED43]/55 disabled:cursor-not-allowed disabled:opacity-45"
                     />
                   </label>
                 </div>
@@ -784,6 +821,7 @@ export default function DarkAuthForm({
                         <button
                           key={option.value}
                           type="button"
+                          disabled={isQuestionnaireLocked}
                           onClick={() => {
                             markStepStarted("questionnaire");
                             updateField("quickUnderstanding", option.value);
@@ -800,6 +838,9 @@ export default function DarkAuthForm({
                             isSelected
                               ? "border-[#99ED43] bg-[#303729] text-[#FFFFFF]"
                               : "border-white/6 bg-[#2b2b2b] text-white/56 hover:border-white/16",
+                            isQuestionnaireLocked
+                              ? "cursor-not-allowed opacity-45"
+                              : "",
                           ].join(" ")}
                           aria-pressed={isSelected}
                         >
@@ -825,6 +866,7 @@ export default function DarkAuthForm({
                         questionnaire.quickUnderstandingOtherPlaceholder
                       }
                       value={values.quickUnderstandingOther}
+                      disabled={isQuestionnaireLocked}
                       onChange={handleTextFieldChange(
                         "quickUnderstandingOther",
                       )}
@@ -834,7 +876,7 @@ export default function DarkAuthForm({
                           quickUnderstandingOther: true,
                         }))
                       }
-                      className="mt-3 w-full rounded-[10px] border border-white/6 bg-[#2b2b2b] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-white/24 focus:border-[#99ED43]/55"
+                      className="mt-3 w-full rounded-[10px] border border-white/6 bg-[#2b2b2b] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-white/24 focus:border-[#99ED43]/55 disabled:cursor-not-allowed disabled:opacity-45"
                     />
                   ) : null}
 
@@ -849,6 +891,12 @@ export default function DarkAuthForm({
                 onSubmit={handleComplete}
                 className="mx-auto mt-12 w-full max-w-[760px]"
               >
+                {isPaymentLocked ? (
+                  <p className="mb-4 rounded-[12px] border border-[#99ED43]/20 bg-[#263817] px-4 py-3 text-sm text-[#daf8ad]">
+                    Complete the previous steps first to unlock payment confirmation.
+                  </p>
+                ) : null}
+
                 <div className="rounded-[14px] border border-white/5 bg-[#232323] p-4">
                   <p className="font-medium text-[#FFFFFF] text-[15px] text-center">
                     {payment.subheading}
@@ -891,7 +939,7 @@ export default function DarkAuthForm({
 
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isPaymentLocked}
                     className="inline-flex items-center justify-center rounded-full font-prompt bg-[#99ED43] px-8 py-3 text-sm font-medium text-[#1A1A1A] shadow-[0_10px_30px_rgba(153,237,67,0.18)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isSubmitting ? "Sending..." : payment.confirmLabel}
@@ -905,7 +953,7 @@ export default function DarkAuthForm({
             <div className="mx-auto mt-12 flex w-full max-w-[760px] items-center justify-between gap-3">
               {currentStep === "basic" ? (
                 <Link
-                  href="/dark-version"
+                  href="/"
                   className="inline-flex items-center justify-center rounded-full bg-[#263817] px-7 py-3 text-sm text-[#b8e17c] transition hover:brightness-110 font-prompt"
                 >
                   {cancelLabel ?? "Cancel"}
@@ -923,7 +971,7 @@ export default function DarkAuthForm({
               <button
                 type="button"
                 onClick={handleNext}
-                disabled={!isStepValid(currentStep, values)}
+                disabled={!isStepValid(currentStep, values) || isCurrentStepLocked}
                 className="inline-flex items-center justify-center rounded-full bg-[#99ED43] px-8 py-3 text-sm font-medium text-[#1A1A1A] shadow-[0_10px_30px_rgba(153,237,67,0.18)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {currentStep === "basic"
