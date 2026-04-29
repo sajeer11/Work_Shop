@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { trackEvent } from "../../lib/analytics";
 
 interface DarkCTAFooterProps {
   logoSrc: string;
@@ -30,6 +33,18 @@ export default function DarkCTAFooter({
     "inline-flex items-center justify-center rounded-full bg-[#99ED43] px-8 py-3 text-[15px] font-prompt font-normal text-[#1A1A1A] shadow-[0_10px_30px_rgba(153,237,67,0.18)] transition hover:brightness-105";
   const socialLinkClassName =
     "inline-flex h-5 min-w-5 items-center justify-center font-prompt text-[15px] font-semibold leading-none text-[#99ED43] transition hover:brightness-125";
+
+  const handleFooterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "").trim();
+
+    trackEvent("reserve_seat_email_submit", {
+      event_category: "engagement",
+      email_provided: Boolean(email),
+      destination: ctaHref,
+      page_location: window.location.href,
+    });
+  };
 
   return (
     <section className="relative w-full overflow-hidden">
@@ -94,9 +109,10 @@ export default function DarkCTAFooter({
           </p>
 
           <form
-            id="dark-footer-form"
+            id="footer-form"
             action={ctaHref}
             method="get"
+            onSubmit={handleFooterSubmit}
             className="gap-2 mx-auto mt-8 flex w-full max-w-xl flex-col rounded-2xl bg-[#FFFFFF1A] p-1.5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] lg:flex-row lg:rounded-full"
           >
             <input

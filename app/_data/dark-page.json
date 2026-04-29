@@ -17,7 +17,7 @@
     },
     "topRightButton": {
       "label": "Reserve Your Seat",
-      "href": "#dark-footer-form"
+      "href": "#footer-form"
     },
     "infoBadges": [
       "Full-Day Workshop",
