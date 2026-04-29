@@ -71,6 +71,7 @@ export default function DarkVersionPage() {
         footerLinks={ctaFooter.footerLinks}
         copyrightText={ctaFooter.copyrightText}
       />
+      
     </main>
   );
 }
