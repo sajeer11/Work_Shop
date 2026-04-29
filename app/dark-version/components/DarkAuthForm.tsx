@@ -3,8 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import darkPageJson from "../../_data/dark-page.json";
+import { trackEvent } from "../../lib/analytics";
 import type { AuthPageContent, DarkPageContent } from "../../_data/page-content.types";
 
 type StepKey = "basic" | "questionnaire" | "payment" | "complete";
@@ -60,6 +61,13 @@ const initialTouchedState: TouchedState = {
   exploredField: false,
   paymentMethod: false,
   paymentProofFile: false,
+};
+
+const initialStartedSteps: Record<StepKey, boolean> = {
+  basic: false,
+  questionnaire: false,
+  payment: false,
+  complete: false,
 };
 
 function isValidEmail(value: string) {
@@ -167,6 +175,8 @@ export default function DarkAuthForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [touched, setTouched] = useState<TouchedState>(initialTouchedState);
+  const [startedSteps, setStartedSteps] = useState<Record<StepKey, boolean>>(initialStartedSteps);
+  const trackedStartedStepsRef = useRef<Set<StepKey>>(new Set());
   const [values, setValues] = useState<FormState>(() => ({
     fullName: "",
     email: "",
@@ -268,6 +278,31 @@ export default function DarkAuthForm({
     return () => window.clearTimeout(timeoutId);
   }, [currentStep, router]);
 
+  useEffect(() => {
+    if (!hasRestoredState) {
+      return;
+    }
+
+    trackEvent("register_step_view", {
+      event_category: "register_funnel",
+      step_name: currentStep,
+    });
+  }, [currentStep, hasRestoredState]);
+
+  useEffect(() => {
+    stepOrder.forEach((step) => {
+      if (!startedSteps[step] || trackedStartedStepsRef.current.has(step)) {
+        return;
+      }
+
+      trackedStartedStepsRef.current.add(step);
+      trackEvent("register_step_start", {
+        event_category: "register_funnel",
+        step_name: step,
+      });
+    });
+  }, [startedSteps]);
+
   const markFieldsTouched = (fields: Array<keyof FormState>) => {
     setTouched((current) => {
       const nextTouched = { ...current };
@@ -287,8 +322,23 @@ export default function DarkAuthForm({
     }));
   };
 
+  const markStepStarted = (step: StepKey) => {
+    setStartedSteps((current) => {
+      if (current[step]) {
+        return current;
+      }
+
+      return {
+        ...current,
+        [step]: true,
+      };
+    });
+  };
+
   const handleTextFieldChange =
     (field: keyof FormState) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+      markStepStarted(currentStep);
+
       const nextValue =
         field === "contactNumber"
           ? event.target.value.replace(/\D/g, "").slice(0, 11)
@@ -313,11 +363,19 @@ export default function DarkAuthForm({
     }
 
     if (currentStep === "basic") {
+      trackEvent("register_step_complete", {
+        event_category: "register_funnel",
+        step_name: "basic",
+      });
       setCurrentStep("questionnaire");
       return;
     }
 
     if (currentStep === "questionnaire") {
+      trackEvent("register_step_complete", {
+        event_category: "register_funnel",
+        step_name: "questionnaire",
+      });
       setCurrentStep("payment");
     }
   };
@@ -339,6 +397,10 @@ export default function DarkAuthForm({
     void (async () => {
       setIsSubmitting(true);
       setSubmitError("");
+      trackEvent("register_submission_start", {
+        event_category: "register_funnel",
+        step_name: "payment",
+      });
 
       try {
         const response = await fetch("/api/register", {
@@ -366,8 +428,21 @@ export default function DarkAuthForm({
         }
 
         window.localStorage.removeItem(registerStorageKey);
+        trackEvent("register_step_complete", {
+          event_category: "register_funnel",
+          step_name: "payment",
+        });
+        trackEvent("register_submission_success", {
+          event_category: "register_funnel",
+          step_name: "complete",
+        });
         setCurrentStep("complete");
       } catch (error) {
+        trackEvent("register_submission_error", {
+          event_category: "register_funnel",
+          step_name: "payment",
+          error_message: error instanceof Error ? error.message : "unknown_error",
+        });
         setSubmitError(
           error instanceof Error ? error.message : "Unable to send your registration right now.",
         );
@@ -566,6 +641,7 @@ export default function DarkAuthForm({
                           key={option.value}
                           type="button"
                           onClick={() => {
+                            markStepStarted("questionnaire");
                             updateField("exploredField", option.value);
                             setTouched((current) => ({ ...current, exploredField: true }));
                           }}
@@ -622,6 +698,7 @@ export default function DarkAuthForm({
                           key={option.value}
                           type="button"
                           onClick={() => {
+                            markStepStarted("questionnaire");
                             updateField("quickUnderstanding", option.value);
                             if (option.value !== "Other") {
                               updateField("quickUnderstandingOther", "");

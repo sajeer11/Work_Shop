@@ -2,31 +2,9 @@
 
 import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { trackEvent, trackPageView } from "../../lib/analytics";
 
-declare global {
-  interface Window {
-    dataLayer: unknown[];
-    gtag?: (...args: unknown[]) => void;
-  }
-}
-
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-
-function trackPageView(url: string) {
-  if (!GA_MEASUREMENT_ID || typeof window.gtag !== "function") {
-    return;
-  }
-
-  window.gtag("config", GA_MEASUREMENT_ID, {
-    page_path: url,
-  });
-}
-
-function trackRegisterClick(target: Element) {
-  if (!GA_MEASUREMENT_ID || typeof window.gtag !== "function") {
-    return;
-  }
-
+function trackCtaClick(target: Element) {
   const link = target.closest("a");
   const button = target.closest("button, input[type='submit']");
   const formAction =
@@ -39,19 +17,20 @@ function trackRegisterClick(target: Element) {
     button?.textContent?.trim() ||
     button?.getAttribute("value") ||
     target.textContent?.trim() ||
-    "Register";
+    "CTA";
+  const normalizedLabel = label.toLowerCase();
 
-  const isRegisterIntent =
-    href === "/register" ||
-    href?.startsWith("/register?") ||
+  const isRegisterIntent = href === "/register" || href?.startsWith("/register?");
+  const isReserveIntent =
     formAction === "/register" ||
-    /register|reserve your seat/i.test(label);
+    normalizedLabel.includes("reserve your seat") ||
+    href === "#footer-form";
 
-  if (!isRegisterIntent) {
+  if (!isRegisterIntent && !isReserveIntent) {
     return;
   }
 
-  window.gtag("event", "register_click", {
+  trackEvent(isReserveIntent ? "reserve_seat_click" : "register_click", {
     event_category: "engagement",
     event_label: label,
     destination: href || formAction || window.location.pathname,
@@ -71,6 +50,45 @@ export default function GoogleAnalytics() {
   }, [pathname, searchParams]);
 
   useEffect(() => {
+    const scrollMilestones = new Set<number>();
+    const pageStartTime = Date.now();
+    let hasSentTimeSpent = false;
+
+    const sendTimeSpent = () => {
+      if (hasSentTimeSpent) {
+        return;
+      }
+
+      hasSentTimeSpent = true;
+      const elapsedSeconds = Math.max(1, Math.round((Date.now() - pageStartTime) / 1000));
+
+      trackEvent("page_time_spent", {
+        page_path: window.location.pathname,
+        page_seconds: elapsedSeconds,
+      });
+    };
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+      if (documentHeight <= 0) {
+        return;
+      }
+
+      const scrollPercent = Math.round((scrollTop / documentHeight) * 100);
+
+      [25, 50, 75, 100].forEach((milestone) => {
+        if (scrollPercent >= milestone && !scrollMilestones.has(milestone)) {
+          scrollMilestones.add(milestone);
+          trackEvent("scroll_depth", {
+            page_path: window.location.pathname,
+            scroll_percent: milestone,
+          });
+        }
+      });
+    };
+
     const handleClick = (event: MouseEvent) => {
       const target = event.target;
 
@@ -78,15 +96,26 @@ export default function GoogleAnalytics() {
         return;
       }
 
-      trackRegisterClick(target);
+      trackCtaClick(target);
     };
 
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        sendTimeSpent();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     document.addEventListener("click", handleClick, true);
 
     return () => {
+      sendTimeSpent();
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       document.removeEventListener("click", handleClick, true);
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }
